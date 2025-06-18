@@ -6,6 +6,11 @@
           <ion-list-header>Inbox</ion-list-header>
           <ion-note>hi&#64;ionicframework.com</ion-note>
 
+          <!-- loop de repetição, percorre uma lista de itens -->
+           <!-- Esse for percorre a lista appPages -->
+            <!-- cada elemento é chamado de p -->
+             <!-- o index é guardado na variável i, posição do elemento na lista -->
+              <!-- track significa ordenação -->
           @for (p of appPages; track p; let i = $index) {
             <ion-menu-toggle auto-hide="false">
               <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
