@@ -15,6 +15,14 @@
       <ion-title size="large">home</ion-title>
     </ion-toolbar>
   </ion-header>
-<h1>Teste</h1>
-  
+   <ion-searchbar></ion-searchbar>
+ 
+    @for (c of categories; track c) {
+      <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{c.name}}</ion-card-title>
+    </ion-card-header>
+  </ion-card> 
+
+    }
 </ion-content>
