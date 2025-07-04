@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonItem, IonInput, IonInputPasswordToggle, IonButton, IonImg } from '@ionic/angular/standalone';
-import { AuthService } from 'src/app/services/auth.service';
+import { IonContent, IonItem, IonInput, IonInputPasswordToggle, IonButton, IonImg, IonSpinner, IonToast, IonText } from '@ionic/angular/standalone';
+import { AuthService, LoginResponse } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,30 +10,210 @@ import { Router } from '@angular/router';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonImg, IonItem, IonContent, CommonModule, FormsModule, IonInput, IonInputPasswordToggle, IonButton]
+  imports: [IonText, IonToast, IonSpinner, IonImg, IonItem, IonContent, CommonModule, FormsModule, IonInput, IonInputPasswordToggle, IonButton]
 })
 export class LoginPage implements OnInit {
   email: string = '';
   password: string = '';
+  isLoading: boolean = false;
+  errorMessage: string = '';
+  showToast: boolean = false;
+  toastMessage: string = '';
+  toastColor: string = 'success';
 
+  // Form validation states
+  emailError: string = '';
+  passwordError: string = '';
+  isFormValid: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
+    // Clear any existing authentication on login page
+    // This ensures user can always access login page
+    this.authService.clearAuth();
+    console.log('Login page loaded, auth cleared');
   }
 
+  /**
+   * Validate email field
+   */
+  validateEmail() {
+    if (!this.email) {
+      this.emailError = 'Email is required';
+      return false;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(this.email)) {
+      this.emailError = 'Please enter a valid email address';
+      return false;
+    }
+
+    this.emailError = '';
+    return true;
+  }
+
+  /**
+   * Validate password field
+   */
+  validatePassword() {
+    if (!this.password) {
+      this.passwordError = 'Password is required';
+      return false;
+    }
+
+    if (this.password.length < 6) {
+      this.passwordError = 'Password must be at least 6 characters long';
+      return false;
+    }
+
+    this.passwordError = '';
+    return true;
+  }
+
+  /**
+   * Validate entire form
+   */
+  validateForm() {
+    const isEmailValid = this.validateEmail();
+    const isPasswordValid = this.validatePassword();
+    this.isFormValid = isEmailValid && isPasswordValid;
+    return this.isFormValid;
+  }
+
+  /**
+   * Handle form input changes
+   */
+  onEmailChange() {
+    if (this.emailError) {
+      this.validateEmail();
+    }
+    this.clearError();
+  }
+
+  onPasswordChange() {
+    if (this.passwordError) {
+      this.validatePassword();
+    }
+    this.clearError();
+  }
+
+  /**
+   * Clear general error message
+   */
+  private clearError() {
+    this.errorMessage = '';
+  }
+
+  /**
+   * Handle login submission
+   */
   onLogin() {
-    // const email = this.email;
-    // const password = this.password;
-    // const isLoggedIn = this.authService.login(email, password);
-    // if (isLoggedIn) {
-      this.router.navigate(['/']);
-    // }
+    console.log('Login button clicked');
+    console.log('Email:', this.email, 'Password:', this.password);
+    
+    if (!this.validateForm()) {
+      console.log('Form validation failed');
+      return;
+    }
+
+    console.log('Form validated, starting login process');
+    this.isLoading = true;
+    this.clearError();
+
+    this.authService.login(this.email.trim(), this.password).subscribe({
+      next: (response: LoginResponse) => {
+        console.log('Login response received:', response);
+        this.isLoading = false;
+        
+        if (response.success) {
+          console.log('Login successful, navigating to home');
+          this.showSuccessToast('Login successful! Welcome back.');
+          
+          // Navigate to home immediately for better UX
+          this.router.navigate(['/home']).then(() => {
+            console.log('Navigation to home completed');
+          });
+        } else {
+          console.log('Login failed:', response.message);
+          this.errorMessage = response.message;
+          this.showErrorToast(response.message);
+        }
+      },
+      error: (error) => {
+        console.error('Login error:', error);
+        this.isLoading = false;
+        this.errorMessage = 'An unexpected error occurred. Please try again.';
+        this.showErrorToast(this.errorMessage);
+      }
+    });
   }
 
+  /**
+   * Navigate to register page
+   */
   onRegister() {
-    this.router.navigate(['/register'])
-
+    this.router.navigate(['/register']);
   }
+
+  /**
+   * Show success toast
+   */
+  private showSuccessToast(message: string) {
+    this.toastMessage = message;
+    this.toastColor = 'success';
+    this.showToast = true;
+  }
+
+  /**
+   * Show error toast
+   */
+  private showErrorToast(message: string) {
+    this.toastMessage = message;
+    this.toastColor = 'danger';
+    this.showToast = true;
+  }
+
+  /**
+   * Handle toast dismiss
+   */
+  onToastDismiss() {
+    this.showToast = false;
+  }
+
+  /**
+   * Test login without complex validation
+   */
+  testLogin() {
+    console.log('Test login clicked');
+    if (!this.email || !this.password) {
+      console.log('Email or password empty');
+      return;
+    }
+
+    console.log('Starting test login with:', this.email, this.password);
+    this.isLoading = true;
+
+    this.authService.login(this.email, this.password).subscribe({
+      next: (response) => {
+        console.log('Test login response:', response);
+        this.isLoading = false;
+        if (response.success) {
+          console.log('Test login successful');
+          this.router.navigate(['/home']);
+        } else {
+          console.log('Test login failed:', response.message);
+          this.errorMessage = response.message;
+        }
+      },
+      error: (error) => {
+        console.error('Test login error:', error);
+        this.isLoading = false;
+        this.errorMessage = 'Test login error';
+      }
+    });
+  }
+
 
 }

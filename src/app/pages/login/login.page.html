@@ -4,26 +4,84 @@
     
     <div class="login-form">
       <div class="form-fields">
-        <ion-item>
-          <ion-input label="Email:" placeholder="Enter your email" [(ngModel)]="email"></ion-input>
+        <!-- Email Field -->
+        <ion-item [class.error]="emailError">
+          <ion-input 
+            label="Email:" 
+            placeholder="Enter your email" 
+            [(ngModel)]="email"
+            (ionInput)="onEmailChange()"
+            (ionBlur)="validateEmail()"
+            type="email"
+            autocomplete="email">
+          </ion-input>
         </ion-item>
+        <ion-text color="danger" *ngIf="emailError" class="error-text">
+          {{ emailError }}
+        </ion-text>
 
-        <ion-item>
-          <ion-input type="password" label="Password:" placeholder="Enter your password" [(ngModel)]="password">
+        <!-- Password Field -->
+        <ion-item [class.error]="passwordError">
+          <ion-input 
+            type="password" 
+            label="Password:" 
+            placeholder="Enter your password" 
+            [(ngModel)]="password"
+            (ionInput)="onPasswordChange()"
+            (ionBlur)="validatePassword()"
+            autocomplete="current-password">
             <ion-input-password-toggle slot="end"></ion-input-password-toggle>
           </ion-input>
         </ion-item>
+        <ion-text color="danger" *ngIf="passwordError" class="error-text">
+          {{ passwordError }}
+        </ion-text>
       </div>
 
+      <!-- General Error Message -->
+      <ion-text color="danger" *ngIf="errorMessage" class="general-error">
+        {{ errorMessage }}
+      </ion-text>
+
       <div class="button-group">
-        <ion-button expand="block" (click)="onLogin()" class="login-btn">
-          LOGIN
+        <ion-button 
+          expand="block" 
+          (click)="onLogin()" 
+          [disabled]="isLoading"
+          class="login-btn">
+          <ion-spinner *ngIf="isLoading" slot="start"></ion-spinner>
+          {{ isLoading ? 'SIGNING IN...' : 'LOGIN' }}
         </ion-button>
         
-        <ion-button expand="block" fill="outline" (click)="onRegister()" class="register-btn">
+                <ion-button 
+          expand="block" 
+          fill="outline" 
+          (click)="onRegister()" 
+          [disabled]="isLoading"
+          class="register-btn">
           REGISTER
+        </ion-button>
+
+        <!-- Temporary test button -->
+        <ion-button 
+          expand="block" 
+          fill="clear" 
+          (click)="testLogin()" 
+          [disabled]="isLoading"
+          color="medium">
+          TEST LOGIN (Debug)
         </ion-button>
       </div>
     </div>
   </div>
+
+  <!-- Toast Notification -->
+  <ion-toast
+    [isOpen]="showToast"
+    [message]="toastMessage"
+    [duration]="3000"
+    [color]="toastColor"
+    position="top"
+    (didDismiss)="onToastDismiss()">
+  </ion-toast>
 </ion-content>

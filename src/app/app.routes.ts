@@ -43,8 +43,4 @@ export const routes: Routes = [
     path: 'profile',
     loadComponent: () => import('./pages/profile/profile.page').then( m => m.ProfilePage)
   },
-  {
-    path: 'home',
-    loadComponent: () => import('./folder/home/home.page').then( m => m.HomePage)
-  },
 ];
