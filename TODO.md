@@ -37,6 +37,31 @@
 - [x] Componentes standalone
 - [x] Correções de navegação e redirecionamento
 
+### Página Home
+- [x] Ícones circulares de categorias clicáveis
+- [x] Layout responsivo com grid adaptativo
+- [x] Imagens arredondadas para categorias
+- [x] Seção de serviços recentes
+- [x] Barra de busca funcional
+- [x] Navegação para páginas de categoria
+- [x] Toast notifications para feedback
+- [x] Animações e transições suaves
+- [x] Design moderno com gradientes e sombras
+- [x] Integração com AuthService para verificar usuário
+
+### Barra Superior Profissional
+- [x] Design moderno com gradiente e sombras
+- [x] Logo com ícone de negócio
+- [x] Verificação de usuário logado vs não logado
+- [x] Avatar circular com iniciais do usuário
+- [x] Menu dropdown para usuário logado
+- [x] Action Sheet com opções: Profile, Settings, Logout
+- [x] Botão de login estilizado para usuários não logados
+- [x] Responsividade para mobile e desktop
+- [x] Animações e transições suaves
+- [x] Integração completa com AuthService
+- [x] Feedback visual com toast notifications
+
 ## 🚧 Próximas Tarefas
 
 ### Funcionalidades Pendentes
@@ -58,7 +83,7 @@
 - [ ] Adicionar temas personalizados por categoria
 
 ### Próxima Tarefa Escolhida
-🎯 **Criar sistema de registro de usuários na página register**
+🎯 **Implementar página de categorias com filtros e listagem de serviços**
 
 ## 📱 Funcionalidades Principais
 

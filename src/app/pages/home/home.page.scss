@@ -1,42 +1,416 @@
-ion-card {
-  --background: #7245459c;
-  --color: #9efff0;
+
+
+// Header profissional
+.main-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  
+  .header-toolbar {
+    --background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    --color: #2C3E50;
+    --border-color: transparent;
+    --min-height: 64px;
+    padding: 8px 16px;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
+    
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      
+      .brand-icon {
+        font-size: 28px;
+        color: #4A90E2;
+      }
+      
+      .brand-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #2C3E50;
+        margin: 0;
+        background: linear-gradient(135deg, #4A90E2 0%, #6A5ACD 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+    }
+    
+    .user-section {
+      .login-button {
+        --background: transparent;
+        --color: #4A90E2;
+        --border-color: #4A90E2;
+        --border-radius: 8px;
+        --padding-start: 16px;
+        --padding-end: 16px;
+        height: 40px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        
+        &:hover {
+          --background: rgba(74, 144, 226, 0.1);
+        }
+      }
+      
+      .user-info {
+        --background: transparent;
+        --color: #2C3E50;
+        --padding-start: 8px;
+        --padding-end: 8px;
+        height: auto;
+        min-height: 48px;
+        
+        .user-avatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, #4A90E2 0%, #6A5ACD 100%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-right: 12px;
+          
+          .avatar-text {
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+          }
+        }
+        
+        .user-details {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          margin-right: 8px;
+          
+          .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2C3E50;
+            line-height: 1.2;
+          }
+          
+          .user-type {
+            font-size: 12px;
+            color: #6C757D;
+            text-transform: capitalize;
+            line-height: 1.2;
+          }
+        }
+        
+        .dropdown-icon {
+          font-size: 16px;
+          color: #6C757D;
+          transition: transform 0.3s ease;
+        }
+        
+        &:hover .dropdown-icon {
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
 }
 
-ion-card-title {
-  --color: #52ffe4;
+// Header colapsível
+.condensed-title {
+  background: linear-gradient(135deg, #4A90E2 0%, #6A5ACD 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
 }
 
-ion-card-subtitle {
-  --color: #d1fff8;
+// Layout principal da home
+ion-content {
+  --background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
 }
 
-.category-icons {
-  display: flex;
-  justify-content: center;
-  gap: 24px;
-  margin: 32px 0 24px 0;
+// Barra de busca customizada
+ion-searchbar {
+  padding: 16px;
+  --background: rgba(255, 255, 255, 0.9);
+  --border-radius: 16px;
+  --box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  margin: 0 16px 16px 16px;
 }
 
-.icon-circle {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  background-size: cover;
-  background-position: center;
-  box-shadow: 0 2px 8px rgb(46, 93, 179);
-  border: 3px solid #fff;
+// Títulos das seções
+.section-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #2C3E50;
+  margin: 0 0 16px 0;
+  padding: 0 20px;
 }
 
-.icon-circle.health {
-  background-image: url('/assets/images/helth.png');
+// Seção de categorias
+.categories-section {
+  margin-bottom: 32px;
+  
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding: 0 20px;
+    
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  .category-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+    
+    &:active {
+      transform: translateY(-2px);
+    }
+    
+    .category-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+      border: 3px solid #ffffff;
+      transition: all 0.3s ease;
+      
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+      
+      &:hover img {
+        transform: scale(1.1);
+      }
+    }
+    
+    .category-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #2C3E50;
+      text-align: center;
+    }
+  }
 }
-.icon-circle.beauty {
-  background-image: url('/assets/images/beauty.png');
+
+// Seção de serviços recentes
+.recent-services {
+  .services-list {
+    padding: 0 16px;
+    
+    .service-card {
+      margin-bottom: 16px;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      background: rgba(255, 255, 255, 0.95);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      }
+      
+      ion-card-header {
+        padding-bottom: 8px;
+        
+        ion-card-title {
+          color: #2C3E50;
+          font-size: 18px;
+          font-weight: 600;
+        }
+        
+        ion-card-subtitle {
+          color: #4A90E2;
+          font-size: 14px;
+          font-weight: 500;
+        }
+      }
+      
+      ion-card-content {
+        padding-top: 0;
+        
+        p {
+          color: #6C757D;
+          font-size: 14px;
+          margin-bottom: 12px;
+        }
+        
+        .service-info {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          
+          .price {
+            font-size: 16px;
+            font-weight: 600;
+            color: #28CA42;
+          }
+          
+          .rating {
+            font-size: 14px;
+            color: #FFB347;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+  }
 }
-.icon-circle.services {
-  background-image: url('/assets/images/services.png');
+
+// Animações
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.icon-circle.others {
-  background-image: url('/assets/images/others.png');
+
+.categories-section,
+.recent-services {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.category-item {
+  animation: fadeInUp 0.6s ease-out;
+  
+  @for $i from 1 through 4 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{($i - 1) * 0.1s};
+    }
+  }
+}
+
+// Estados específicos por categoria
+.category-item {
+  &[data-category="health"] .category-icon {
+    border-color: #20B2AA;
+  }
+  
+  &[data-category="beauty"] .category-icon {
+    border-color: #FF69B4;
+  }
+  
+  &[data-category="services"] .category-icon {
+    border-color: #4169E1;
+  }
+  
+  &[data-category="others"] .category-icon {
+    border-color: #6A5ACD;
+  }
+}
+
+// Responsividade avançada
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 18px;
+    padding: 0 16px;
+  }
+  
+  .categories-section .category-grid {
+    padding: 0 16px;
+    gap: 12px;
+  }
+  
+  .category-item {
+    padding: 12px;
+    
+    .category-icon {
+      width: 70px;
+      height: 70px;
+    }
+    
+    .category-label {
+      font-size: 13px;
+    }
+  }
+}
+
+// Responsividade para header
+@media (max-width: 768px) {
+  .main-header .header-toolbar {
+    --min-height: 56px;
+    padding: 4px 12px;
+    
+    .brand-section {
+      gap: 8px;
+      
+      .brand-icon {
+        font-size: 24px;
+      }
+      
+      .brand-title {
+        font-size: 20px;
+      }
+    }
+    
+    .user-section .user-info {
+      .user-details {
+        display: none; // Hide user details on small screens
+      }
+      
+      .user-avatar {
+        margin-right: 4px;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .main-header .header-toolbar {
+    padding: 4px 8px;
+    
+    .brand-section {
+      .brand-title {
+        font-size: 18px;
+      }
+    }
+    
+    .user-section .login-button {
+      --padding-start: 12px;
+      --padding-end: 12px;
+      height: 36px;
+      
+      ion-icon {
+        display: none; // Hide icon on very small screens
+      }
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  .categories-section .category-grid {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .recent-services .services-list {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .main-header .header-toolbar {
+    padding: 8px 24px;
+    --min-height: 72px;
+  }
 }

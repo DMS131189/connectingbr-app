@@ -1,9 +1,32 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>ConnectingBr</ion-title>
+<ion-header [translucent]="true" class="main-header">
+  <ion-toolbar class="header-toolbar">
+    <!-- Logo e Título -->
+    <div slot="start" class="brand-section">
+      <ion-icon name="business" class="brand-icon"></ion-icon>
+      <ion-title class="brand-title">ConnectingBr</ion-title>
+    </div>
 
-    <ion-buttons slot="end">
-      <ion-button (click)="onLogin()"> Login</ion-button>
+    <!-- Menu do usuário ou botão de login -->
+    <ion-buttons slot="end" class="user-section">
+      @if (currentUser) {
+        <!-- Usuário logado -->
+        <ion-button fill="clear" class="user-info" (click)="openUserMenu()">
+          <div class="user-avatar">
+            <span class="avatar-text">{{ getUserInitials() }}</span>
+          </div>
+          <div class="user-details">
+            <span class="user-name">{{ currentUser.name }}</span>
+            <span class="user-type">{{ currentUser.type }}</span>
+          </div>
+          <ion-icon name="chevron-down" class="dropdown-icon"></ion-icon>
+        </ion-button>
+      } @else {
+        <!-- Usuário não logado -->
+        <ion-button fill="outline" class="login-button" (click)="onLogin()">
+          <ion-icon name="person" slot="start"></ion-icon>
+          Login
+        </ion-button>
+      }
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -11,24 +34,61 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">home</ion-title>
+      <ion-title size="large" class="condensed-title">ConnectingBr</ion-title>
     </ion-toolbar>
   </ion-header>
-   <ion-searchbar></ion-searchbar>
+   <ion-searchbar placeholder="Search for services..." (ionInput)="onSearch($event)"></ion-searchbar>
  
-  <div class="category-icons">
-    <div class="icon-circle health"></div>
-    <div class="icon-circle beauty"></div>
-    <div class="icon-circle services"></div>
-    <div class="icon-circle others  "></div>
+  <div class="categories-section">
+    <h2 class="section-title">Categories</h2>
+    <div class="category-grid">
+      @for (category of categories; track category.value) {
+        <div class="category-item" [attr.data-category]="category.value" (click)="onCategoryClick(category)">
+          <div class="category-icon">
+            <img [src]="category.image" [alt]="category.name" />
+          </div>
+          <span class="category-label">{{ category.name }}</span>
+        </div>
+      }
+    </div>
   </div>
 
-    @for (c of categories; track c) {
-      <ion-card>
-    <ion-card-header>
-      <ion-card-title>{{c.name}}</ion-card-title>
-    </ion-card-header>
-  </ion-card> 
+  <div class="recent-services" *ngIf="recentServices?.length">
+    <h2 class="section-title">Recent Services</h2>
+    <div class="services-list">
+      @for (service of recentServices; track service.id) {
+        <ion-card class="service-card" (click)="onServiceClick(service)">
+          <ion-card-header>
+            <ion-card-title>{{ service.name }}</ion-card-title>
+            <ion-card-subtitle>{{ service.category }}</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            <p>{{ service.description }}</p>
+            <div class="service-info">
+              <span class="price">{{ service.price }}</span>
+              <span class="rating">⭐ {{ service.rating }}</span>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      }
+         </div>
+   </div>
 
-    }
+   <!-- Toast Notification -->
+   <ion-toast
+     [isOpen]="showToast"
+     [message]="toastMessage"
+     [duration]="2000"
+     position="top"
+     color="primary"
+     (didDismiss)="onToastDismiss()">
+   </ion-toast>
+
+   <!-- User Menu Action Sheet -->
+   <ion-action-sheet
+     [isOpen]="showUserMenu"
+     header="User Menu"
+     [buttons]="userMenuButtons"
+     (didDismiss)="onUserMenuDismiss()">
+   </ion-action-sheet>
 </ion-content>
