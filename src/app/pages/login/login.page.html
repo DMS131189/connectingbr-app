@@ -1,38 +1,29 @@
-<ion-content [fullscreen]="true">
-  
-
-  <div id="container">
+<ion-content [fullscreen]="true" class="login-content">
+  <div class="login-container">
+    <img src="/assets/images/login-people.png" alt="Profissionais" class="login-image" />
     
-    <!--Email and Password-->
-    <ion-item>
-      <ion-input label="Email:" placeholder="Enter your email." [(ngModel)]="email"></ion-input>
-    </ion-item>
+    <div class="login-form">
+      <div class="form-fields">
+        <ion-item>
+          <ion-input label="Email:" placeholder="Enter your email" [(ngModel)]="email"></ion-input>
+        </ion-item>
 
-    <ion-item>
-    <ion-input type="password" label="Password" [(ngModel)]="password">
-      <ion-input-password-toggle slot="end"></ion-input-password-toggle>
-    </ion-input>
-    </ion-item>
-    <!--BUTTON-->
-    <div class="wrapper">
-      <ion-button (click)="onLogin()" >LOGIN</ion-button> <br><br>
-    
-      <ion-button (click)="onRegister()" >REGISTER</ion-button>
-
-      <div class="ion-activatable ripple-parent rectangle">
-        <ion-ripple-effect></ion-ripple-effect>
+        <ion-item>
+          <ion-input type="password" label="Password:" placeholder="Enter your password" [(ngModel)]="password">
+            <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+          </ion-input>
+        </ion-item>
       </div>
 
-      <div class="ion-activatable ripple-parent rounded-rectangle">
-        <ion-ripple-effect></ion-ripple-effect>
+      <div class="button-group">
+        <ion-button expand="block" (click)="onLogin()" class="login-btn">
+          LOGIN
+        </ion-button>
+        
+        <ion-button expand="block" fill="outline" (click)="onRegister()" class="register-btn">
+          REGISTER
+        </ion-button>
       </div>
-
-      <div class="ion-activatable ripple-parent circle">
-        <ion-ripple-effect></ion-ripple-effect>
-      </div>
-
     </div>
-    
   </div>
- 
 </ion-content>

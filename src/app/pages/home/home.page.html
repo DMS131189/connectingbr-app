@@ -5,7 +5,6 @@
     <ion-buttons slot="end">
       <ion-button (click)="onLogin()"> Login</ion-button>
     </ion-buttons>
-
   </ion-toolbar>
 </ion-header>
 
@@ -17,6 +16,13 @@
   </ion-header>
    <ion-searchbar></ion-searchbar>
  
+  <div class="category-icons">
+    <div class="icon-circle health"></div>
+    <div class="icon-circle beauty"></div>
+    <div class="icon-circle services"></div>
+    <div class="icon-circle others  "></div>
+  </div>
+
     @for (c of categories; track c) {
       <ion-card>
     <ion-card-header>

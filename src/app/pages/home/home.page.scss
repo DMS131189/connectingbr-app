@@ -1,5 +1,5 @@
 ion-card {
-  --background: #000;
+  --background: #7245459c;
   --color: #9efff0;
 }
 
@@ -9,4 +9,34 @@ ion-card-title {
 
 ion-card-subtitle {
   --color: #d1fff8;
+}
+
+.category-icons {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin: 32px 0 24px 0;
+}
+
+.icon-circle {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 2px 8px rgb(46, 93, 179);
+  border: 3px solid #fff;
+}
+
+.icon-circle.health {
+  background-image: url('/assets/images/helth.png');
+}
+.icon-circle.beauty {
+  background-image: url('/assets/images/beauty.png');
+}
+.icon-circle.services {
+  background-image: url('/assets/images/services.png');
+}
+.icon-circle.others {
+  background-image: url('/assets/images/others.png');
 }

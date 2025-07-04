@@ -25,10 +25,7 @@ export class HomePage implements OnInit {
       name: 'Services',
       value: 'services',
     },
-    {
-      name: 'Outros',
-      value: 'outros',
-    },
+    
     
   ]
   constructor(private router: Router) { }
