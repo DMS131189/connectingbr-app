@@ -1,13 +1,189 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>register</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Create Account</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">register</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="register-container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="person-outline"></ion-icon>
+          Join ConnectingBR
+        </ion-card-title>
+      </ion-card-header>
+      
+      <ion-card-content>
+        <form (ngSubmit)="onSubmit()">
+          <!-- Personal Information Section -->
+          <div class="form-section">
+            <h3>Personal Information</h3>
+            
+            <ion-item>
+              <ion-label position="stacked">First Name *</ion-label>
+              <ion-input 
+                type="text" 
+                [(ngModel)]="name" 
+                name="name"
+                placeholder="Enter your first name"
+                required>
+              </ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="stacked">Last Name *</ion-label>
+              <ion-input 
+                type="text" 
+                [(ngModel)]="surname" 
+                name="surname"
+                placeholder="Enter your last name"
+                required>
+              </ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="stacked">Email *</ion-label>
+              <ion-input 
+                type="email" 
+                [(ngModel)]="email" 
+                name="email"
+                placeholder="Enter your email"
+                (ionInput)="validateEmail()"
+                required>
+              </ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="stacked">Confirm Email *</ion-label>
+              <ion-input 
+                type="email" 
+                [(ngModel)]="confirmEmail" 
+                name="confirmEmail"
+                placeholder="Confirm your email"
+                (ionInput)="validateEmail()"
+                required>
+              </ion-input>
+            </ion-item>
+
+            <ion-text color="danger" *ngIf="emailError">
+              <small>{{ emailError }}</small>
+            </ion-text>
+
+            <ion-item>
+              <ion-label position="stacked">Password *</ion-label>
+              <ion-input 
+                type="password" 
+                [(ngModel)]="password" 
+                name="password"
+                placeholder="Enter your password"
+                (ionInput)="validatePassword()"
+                required>
+              </ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="stacked">Confirm Password *</ion-label>
+              <ion-input 
+                type="password" 
+                [(ngModel)]="confirmPassword" 
+                name="confirmPassword"
+                placeholder="Confirm your password"
+                (ionInput)="validatePassword()"
+                required>
+              </ion-input>
+            </ion-item>
+
+            <ion-text color="danger" *ngIf="passwordError">
+              <small>{{ passwordError }}</small>
+            </ion-text>
+          </div>
+
+          <!-- Professional Toggle Section -->
+          <div class="professional-toggle">
+            <ion-item>
+              <ion-label>Be a Professional</ion-label>
+              <ion-toggle 
+                [(ngModel)]="isProfessional" 
+                (ionChange)="toggleProfessional()"
+                name="isProfessional">
+              </ion-toggle>
+            </ion-item>
+            <ion-text color="medium">
+              <small>Enable this to register as a service provider</small>
+            </ion-text>
+          </div>
+
+          <!-- Professional Information Section -->
+          <div class="form-section" *ngIf="isProfessional">
+            <h3>
+              <ion-icon name="business-outline"></ion-icon>
+              Professional Information
+            </h3>
+            
+            <ion-item>
+              <ion-label position="stacked">Business Name *</ion-label>
+              <ion-input 
+                type="text" 
+                [(ngModel)]="businessName" 
+                name="businessName"
+                placeholder="Enter your business name"
+                required>
+              </ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="stacked">Business Description *</ion-label>
+              <ion-input 
+                type="textarea" 
+                [(ngModel)]="businessDescription" 
+                name="businessDescription"
+                placeholder="Describe your business and services"
+                rows="3"
+                required>
+              </ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="stacked">Website</ion-label>
+              <ion-input 
+                type="url" 
+                [(ngModel)]="website" 
+                name="website"
+                placeholder="https://your-website.com"
+                (ionInput)="validateEmail()">
+              </ion-input>
+            </ion-item>
+          </div>
+
+          <!-- Error Messages -->
+          <ion-text color="danger" *ngIf="formError">
+            <small>{{ formError }}</small>
+          </ion-text>
+
+          <!-- Submit Button -->
+          <div class="submit-section">
+            <ion-button 
+              type="submit" 
+              expand="block" 
+              size="large"
+              [disabled]="!name || !surname || !email || !confirmEmail || !password || !confirmPassword">
+              Create Account
+            </ion-button>
+          </div>
+        </form>
+
+        <!-- Login Link -->
+        <div class="login-link">
+          <ion-text color="medium">
+            Already have an account? 
+            <a href="/login">Sign in</a>
+          </ion-text>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>
