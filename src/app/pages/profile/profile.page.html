@@ -1,13 +1,69 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>profile</ion-title>
+    <ion-title>{{ service?.name || 'Profile' }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">profile</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" *ngIf="service">
+  <div class="profile-header">
+    <div class="profile-avatar">
+      <ion-icon name="medkit-outline" size="large"></ion-icon>
+    </div>
+    <div class="profile-info">
+      <h2>{{ service.name }}</h2>
+      <div class="profile-specialty">{{ service.specialty }}</div>
+      <div class="profile-rating">
+        <span class="stars">
+          <ng-container *ngFor="let filled of getStars(service.rating)">
+            <ion-icon [name]="filled ? 'star' : 'star-outline'"></ion-icon>
+          </ng-container>
+        </span>
+        <span class="reviews">- {{ service.reviews }} reviews</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="profile-section">
+    <h3>Description</h3>
+    <p>{{ service.description }}</p>
+  </div>
+
+  <div class="profile-section info-list">
+    <div class="info-item">
+      <ion-icon name="location-outline"></ion-icon>
+      <span>{{ service.location }}</span>
+    </div>
+    <div class="info-item">
+      <ion-icon name="time-outline"></ion-icon>
+      <span>{{ service.hour }}</span>
+    </div>
+    <div class="info-item">
+      <ion-icon name="call-outline"></ion-icon>
+      <span>{{ service.contact }}</span>
+    </div>
+  </div>
+
+  <div class="profile-section">
+    <h3>Manage Services</h3>
+    <div *ngFor="let s of service.services" class="manage-service">
+      <div class="service-name">{{ s.name }}</div>
+      <div class="service-category">{{ s.category }}</div>
+      <ion-button size="small" fill="outline">Edit</ion-button>
+      <ion-button size="small" color="danger" fill="outline">Delete</ion-button>
+    </div>
+  </div>
+
+  <div class="profile-section">
+    <h3>Photos</h3>
+    <div class="photos">
+      <img *ngFor="let photo of service.photos" [src]="photo" alt="Clinic photo" />
+    </div>
+  </div>
+
+  <div class="profile-section">
+    <h3>Map</h3>
+    <div class="map-container">
+      <iframe [src]="service.mapUrl" width="100%" height="180" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+  </div>
 </ion-content>

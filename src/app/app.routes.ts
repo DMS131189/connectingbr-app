@@ -40,7 +40,7 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/add-edit-service/add-edit-service.page').then( m => m.AddEditServicePage)
   },
   {
-    path: 'profile',
+    path: 'profile/:id',
     loadComponent: () => import('./pages/profile/profile.page').then( m => m.ProfilePage)
   },
 ];

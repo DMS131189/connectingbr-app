@@ -145,26 +145,14 @@ export class HomePage implements OnInit {
 
   onCategoryClick(category: Category) {
     console.log('Category clicked:', category);
-    
-    // Show toast message for now (later we'll navigate to categories page)
-    this.toastMessage = `Exploring ${category.name} services...`;
-    this.showToast = true;
-
-    // Navigate to categories page with filter
-    this.router.navigate(['/categories'], { 
-      queryParams: { category: category.value } 
+    // Redireciona para a página de busca filtrando pela categoria
+    this.router.navigate(['/search'], {
+      queryParams: { category: category.value }
     });
   }
 
   onServiceClick(service: Service) {
-    console.log('Service clicked:', service);
-    
-    // Show toast message for now (later we'll navigate to service details)
-    this.toastMessage = `Opening ${service.name} details...`;
-    this.showToast = true;
-
-    // TODO: Navigate to service details page
-    // this.router.navigate(['/service-details', service.id]);
+    this.router.navigate(['/profile', service.id]);
   }
 
   onToastDismiss() {

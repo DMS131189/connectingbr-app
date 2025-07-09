@@ -1,0 +1,111 @@
+.profile-header {
+  display: flex;
+  align-items: center;
+  padding: 24px 16px 8px 16px;
+}
+
+.profile-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #f4f4f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+  font-size: 2.5rem;
+}
+
+.profile-info h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1a237e;
+}
+
+.profile-specialty {
+  color: #555;
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.profile-rating {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.stars ion-icon {
+  color: #fbc02d;
+  font-size: 1.1em;
+}
+
+.reviews {
+  color: #888;
+  margin-left: 8px;
+  font-size: 0.95em;
+}
+
+.profile-section {
+  padding: 16px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.profile-section h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.1rem;
+  color: #1a237e;
+}
+
+.info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #444;
+  font-size: 1rem;
+}
+
+.manage-service {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.service-name {
+  font-weight: 600;
+  color: #222;
+}
+
+.service-category {
+  color: #888;
+  font-size: 0.95em;
+  margin-right: 8px;
+}
+
+.photos {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.photos img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.map-container {
+  margin-top: 8px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+}

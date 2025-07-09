@@ -1,13 +1,46 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>search</ion-title>
+    <ion-title>ConnectingBr</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">search</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="search-bar-container">
+    <ion-searchbar
+      placeholder="Search"
+      [value]="searchQuery"
+      (ionInput)="onSearchChange($event)"
+      showCancelButton="focus"
+    ></ion-searchbar>
+  </div>
+
+  <div class="results-container">
+    <h2>Search Results</h2>
+    <ng-container *ngIf="filteredServices.length > 0; else noResults">
+      <div *ngFor="let service of filteredServices" class="service-card" (click)="goToProfile(service)">
+        <div class="service-avatar">
+          <ion-icon name="person-circle-outline" size="large"></ion-icon>
+        </div>
+        <div class="service-info">
+          <div class="service-title">{{ service.name }}</div>
+          <div class="service-desc">{{ service.description }}</div>
+          <div class="service-rating">
+            <span class="stars">
+              <ng-container *ngFor="let filled of getStars(service.rating); let i = index">
+                <ion-icon [name]="filled ? 'star' : 'star-outline'"></ion-icon>
+              </ng-container>
+            </span>
+            <span class="reviews">({{ service.reviews }} reviews)</span>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #noResults>
+      <div class="no-results">No services found.</div>
+    </ng-template>
+  </div>
+
+  <ion-button expand="block" class="call-btn" (click)="onCall(filteredServices[0])" [disabled]="filteredServices.length === 0">
+    CALL
+  </ion-button>
 </ion-content>
