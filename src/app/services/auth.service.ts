@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { delay, map } from 'rxjs/operators';
+import { delay, map, catchError } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 export interface User {
   id: string;
@@ -16,14 +17,29 @@ export interface LoginResponse {
   token?: string;
 }
 
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface BackendLoginResponse {
+  success: boolean;
+  message: string;
+  data?: {
+    user: User;
+    token: string;
+  };
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
+  private apiUrl = 'http://localhost:3000';
 
-  // Mock database of users
+  // Mock database of users (fallback)
   private mockUsers: (User & { password: string })[] = [
     {
       id: '1',
@@ -48,13 +64,13 @@ export class AuthService {
     }
   ];
 
-  constructor() {
+  constructor(private http: HttpClient) {
     // Check if user is already logged in on service initialization
     this.checkStoredAuth();
   }
 
   /**
-   * Login method with validation
+   * Login method with backend integration
    */
   login(email: string, password: string): Observable<LoginResponse> {
     // Validate input
@@ -72,7 +88,52 @@ export class AuthService {
       });
     }
 
-    // Simulate API call with delay
+    const loginData: LoginRequest = {
+      email: email.toLowerCase(),
+      password: password
+    };
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    // Try backend first, fallback to mock if backend is unavailable
+    return this.http.post<BackendLoginResponse>(`${this.apiUrl}/auth/login`, loginData, { headers })
+      .pipe(
+        map((response: BackendLoginResponse) => {
+          if (response.success && response.data) {
+            const userProfile = response.data.user;
+            const token = response.data.token;
+            
+            // Store authentication
+            this.storeAuth(userProfile, token);
+            this.currentUserSubject.next(userProfile);
+
+            return {
+              success: true,
+              message: response.message || 'Login successful',
+              user: userProfile,
+              token
+            };
+          } else {
+            return {
+              success: false,
+              message: response.message || 'Login failed'
+            };
+          }
+        }),
+        catchError((error) => {
+          console.warn('Backend login failed, falling back to mock:', error);
+          // Fallback to mock login
+          return this.mockLogin(email, password);
+        })
+      );
+  }
+
+  /**
+   * Mock login method (fallback)
+   */
+  private mockLogin(email: string, password: string): Observable<LoginResponse> {
     return of(null).pipe(
       delay(1500), // Simulate network delay
       map(() => {
@@ -96,7 +157,7 @@ export class AuthService {
 
           return {
             success: true,
-            message: 'Login successful',
+            message: 'Login successful (mock)',
             user: userProfile,
             token
           };

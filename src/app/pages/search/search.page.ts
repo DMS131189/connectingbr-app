@@ -43,6 +43,7 @@ export class SearchPage implements OnInit {
   loadServices() {
     // Serviços fictícios para exemplo
     this.services = [
+      // Health Services
       {
         id: '1',
         name: 'Dr. Aria Souza',
@@ -75,7 +76,18 @@ export class SearchPage implements OnInit {
       },
       {
         id: '4',
-        name: 'Hair Styling',
+        name: 'Dr. Luis Silva',
+        category: 'health',
+        description: 'Cardiologist specialist',
+        price: '',
+        rating: 4.8,
+        provider: 'Heart Clinic',
+        reviews: 45
+      },
+      // Beauty Services
+      {
+        id: '5',
+        name: 'Salon Maria',
         category: 'beauty',
         description: 'Professional hair cutting and styling',
         price: '$45-80',
@@ -84,14 +96,116 @@ export class SearchPage implements OnInit {
         reviews: 50
       },
       {
-        id: '5',
-        name: 'Home Cleaning',
+        id: '6',
+        name: 'Beauty Studio Ana',
+        category: 'beauty',
+        description: 'Makeup and beauty treatments',
+        price: '$60-120',
+        rating: 4.6,
+        provider: 'Beauty Studio',
+        reviews: 35
+      },
+      {
+        id: '7',
+        name: 'Nail Art Studio',
+        category: 'beauty',
+        description: 'Professional nail care and design',
+        price: '$30-60',
+        rating: 4.9,
+        provider: 'Nail Studio',
+        reviews: 28
+      },
+      {
+        id: '8',
+        name: 'Spa Relax',
+        category: 'beauty',
+        description: 'Massage and spa treatments',
+        price: '$80-150',
+        rating: 4.7,
+        provider: 'Spa Center',
+        reviews: 42
+      },
+      // Services
+      {
+        id: '9',
+        name: 'Clean Home',
         category: 'services',
         description: 'Complete residential cleaning',
         price: '$80-150',
         rating: 4.7,
         provider: 'Clean Home',
         reviews: 40
+      },
+      {
+        id: '10',
+        name: 'Tech Support Pro',
+        category: 'services',
+        description: 'Computer and IT support',
+        price: '$50-100',
+        rating: 4.5,
+        provider: 'Tech Solutions',
+        reviews: 25
+      },
+      {
+        id: '11',
+        name: 'Legal Consult',
+        category: 'services',
+        description: 'Legal consultation and advice',
+        price: '$120-200',
+        rating: 4.8,
+        provider: 'Law Office',
+        reviews: 18
+      },
+      {
+        id: '12',
+        name: 'Accounting Plus',
+        category: 'services',
+        description: 'Accounting and tax services',
+        price: '$90-180',
+        rating: 4.6,
+        provider: 'Accounting Firm',
+        reviews: 32
+      },
+      // Others
+      {
+        id: '13',
+        name: 'Pet Care Center',
+        category: 'others',
+        description: 'Veterinary and pet grooming',
+        price: '$40-80',
+        rating: 4.9,
+        provider: 'Pet Care',
+        reviews: 55
+      },
+      {
+        id: '14',
+        name: 'Tutor Academy',
+        category: 'others',
+        description: 'Private tutoring services',
+        price: '$30-60',
+        rating: 4.4,
+        provider: 'Education Center',
+        reviews: 22
+      },
+      {
+        id: '15',
+        name: 'Event Planner',
+        category: 'others',
+        description: 'Wedding and event planning',
+        price: '$200-500',
+        rating: 4.8,
+        provider: 'Event Solutions',
+        reviews: 38
+      },
+      {
+        id: '16',
+        name: 'Photography Pro',
+        category: 'others',
+        description: 'Professional photography',
+        price: '$150-300',
+        rating: 4.7,
+        provider: 'Photo Studio',
+        reviews: 29
       }
     ];
   }
