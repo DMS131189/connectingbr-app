@@ -18,10 +18,13 @@ import {
   IonText,
   IonIcon,
   IonBackButton,
-  IonButtons
+  IonButtons,
+  IonSpinner
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { personOutline, businessOutline, globeOutline } from 'ionicons/icons';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -46,6 +49,7 @@ import { personOutline, businessOutline, globeOutline } from 'ionicons/icons';
     IonIcon,
     IonBackButton,
     IonButtons,
+    IonSpinner,
     CommonModule, 
     FormsModule
   ]
@@ -70,8 +74,12 @@ export class RegisterPage implements OnInit {
   emailError: string = '';
   passwordError: string = '';
   formError: string = '';
+  isLoading: boolean = false;
 
-  constructor() {
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {
     addIcons({ personOutline, businessOutline, globeOutline });
   }
 
@@ -150,22 +158,36 @@ export class RegisterPage implements OnInit {
   // Handle form submission
   onSubmit() {
     if (this.validateForm()) {
-      const userData = {
-        name: this.name,
-        surname: this.surname,
-        email: this.email,
-        password: this.password,
-        isProfessional: this.isProfessional,
-        ...(this.isProfessional && {
-          businessName: this.businessName,
-          businessDescription: this.businessDescription,
-          website: this.website
-        })
-      };
+      this.isLoading = true;
       
-      console.log('Registration data:', userData);
-      // TODO: Implement actual registration logic
-      // this.authService.register(userData);
+      const fullName = `${this.name} ${this.surname}`;
+      const userType = this.isProfessional ? 'provider' : 'client';
+      
+      this.authService.register(this.email, this.password, fullName, userType).subscribe({
+        next: (response) => {
+          this.isLoading = false;
+          
+          if (response.success && response.user) {
+            console.log('Registration successful:', response);
+            
+            // Check if user is a professional and redirect accordingly
+            if (response.user.type === 'provider' && response.user.professionalId) {
+              // Redirect professional to their edit page
+              this.router.navigate(['/professional', response.user.professionalId, 'edit']);
+            } else {
+              // Redirect client to home page
+              this.router.navigate(['/home']);
+            }
+          } else {
+            this.formError = response.message || 'Registration failed';
+          }
+        },
+        error: (error) => {
+          this.isLoading = false;
+          console.error('Registration error:', error);
+          this.formError = 'An unexpected error occurred. Please try again.';
+        }
+      });
     }
   }
 }

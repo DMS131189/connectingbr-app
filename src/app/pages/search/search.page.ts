@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonSearchbar, IonButton, IonIcon } from '@ionic/angular/standalone';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { AppHeaderComponent } from '../../components/app-header/app-header.component';
 
 interface Service {
   id: string;
@@ -21,7 +22,7 @@ interface Service {
   templateUrl: './search.page.html',
   styleUrls: ['./search.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonSearchbar, IonButton, IonIcon, CommonModule, FormsModule]
+  imports: [AppHeaderComponent, IonContent, IonHeader, IonTitle, IonToolbar, IonSearchbar, IonButton, IonIcon, CommonModule, FormsModule]
 })
 export class SearchPage implements OnInit {
   searchQuery: string = '';
@@ -229,7 +230,7 @@ export class SearchPage implements OnInit {
   }
 
   goToProfile(service: Service) {
-    this.router.navigate(['/profile', service.id]);
+    this.router.navigate(['/professional', service.id]);
   }
 
   getStars(rating: number): boolean[] {

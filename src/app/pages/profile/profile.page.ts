@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon } from '@ionic/angular/standalone';
-import { ActivatedRoute } from '@angular/router';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonItem, IonLabel, IonInput, IonTextarea } from '@ionic/angular/standalone';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AppHeaderComponent } from '../../components/app-header/app-header.component';
+import { AuthService } from '../../services/auth.service';
 
 interface ServiceProfile {
   id: string;
@@ -24,16 +26,41 @@ interface ServiceProfile {
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, CommonModule, FormsModule]
+  imports: [AppHeaderComponent, IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonItem, IonLabel, IonInput, IonTextarea, CommonModule, FormsModule]
 })
 export class ProfilePage implements OnInit {
   service: ServiceProfile | null = null;
+  isEditMode: boolean = false;
+  isOwner: boolean = false;
+  originalService: ServiceProfile | null = null; // To store original data for cancel
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(
+    private route: ActivatedRoute, 
+    private router: Router,
+    private authService: AuthService
+  ) { }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
+    const url = this.router.url;
+    
+    // Detect if we're in edit mode
+    this.isEditMode = url.includes('/edit');
+    
+    // Check if current user is the owner using AuthService
+    this.isOwner = this.isEditMode || this.checkIfOwner(id);
+    
     this.loadService(id);
+  }
+
+  checkIfOwner(serviceId: string | null): boolean {
+    if (!serviceId) return false;
+    
+    // Use AuthService to check if current user owns this professional profile
+    const currentUser = this.authService.getCurrentUser();
+    const userProfessionalId = this.authService.getProfessionalId();
+    
+    return currentUser?.type === 'provider' && userProfessionalId === serviceId;
   }
 
   loadService(id: string | null) {
@@ -250,70 +277,65 @@ export class ProfilePage implements OnInit {
         specialty: 'Veterinarian',
         rating: 4.9,
         reviews: 55,
-        description: 'Complete veterinary care and pet grooming services.',
-        location: 'Rua dos Pinheiros, 300',
+        description: 'Comprehensive veterinary care and pet grooming services.',
+        location: 'Rua dos Cães, 100',
         hour: '8:00 AM - 7:00 PM',
-        contact: '+55 11 96666-6666',
+        contact: '+55 11 95555-4444',
         photos: ['assets/images/others.png'],
         mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3656.457!2d-46.656574!3d-23.588068!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59c8b1b1b1b1%3A0x1b1b1b1b1b1b1b1b!2sS%C3%A3o%20Paulo!5e0!3m2!1spt-BR!2sbr!4v1680000000000!5m2!1spt-BR!2sbr',
         services: [
-          { name: 'Veterinary Care', category: 'Pet Care' },
+          { name: 'Pet Consultation', category: 'Veterinary' },
           { name: 'Pet Grooming', category: 'Pet Care' }
-        ]
-      },
-      {
-        id: '14',
-        name: 'Tutor Academy',
-        specialty: 'Private Tutor',
-        rating: 4.4,
-        reviews: 22,
-        description: 'Private tutoring services for all subjects and levels.',
-        location: 'Av. Consolação, 400',
-        hour: '9:00 AM - 8:00 PM',
-        contact: '+55 11 95555-5555',
-        photos: ['assets/images/others.png'],
-        mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3656.457!2d-46.656574!3d-23.588068!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59c8b1b1b1b1%3A0x1b1b1b1b1b1b1b1b!2sS%C3%A3o%20Paulo!5e0!3m2!1spt-BR!2sbr!4v1680000000000!5m2!1spt-BR!2sbr',
-        services: [
-          { name: 'Math Tutoring', category: 'Education' },
-          { name: 'English Classes', category: 'Education' }
-        ]
-      },
-      {
-        id: '15',
-        name: 'Event Planner',
-        specialty: 'Event Coordinator',
-        rating: 4.8,
-        reviews: 38,
-        description: 'Professional wedding and event planning services.',
-        location: 'Rua Bela Cintra, 600',
-        hour: '9:00 AM - 6:00 PM',
-        contact: '+55 11 94444-4444',
-        photos: ['assets/images/others.png'],
-        mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3656.457!2d-46.656574!3d-23.588068!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59c8b1b1b1b1%3A0x1b1b1b1b1b1b1b1b!2sS%C3%A3o%20Paulo!5e0!3m2!1spt-BR!2sbr!4v1680000000000!5m2!1spt-BR!2sbr',
-        services: [
-          { name: 'Wedding Planning', category: 'Events' },
-          { name: 'Corporate Events', category: 'Events' }
-        ]
-      },
-      {
-        id: '16',
-        name: 'Photography Pro',
-        specialty: 'Photographer',
-        rating: 4.7,
-        reviews: 29,
-        description: 'Professional photography for weddings, events, and portraits.',
-        location: 'Av. Ibirapuera, 800',
-        hour: '8:00 AM - 8:00 PM',
-        contact: '+55 11 93333-3333',
-        photos: ['assets/images/others.png'],
-        mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3656.457!2d-46.656574!3d-23.588068!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59c8b1b1b1b1%3A0x1b1b1b1b1b1b1b1b!2sS%C3%A3o%20Paulo!5e0!3m2!1spt-BR!2sbr!4v1680000000000!5m2!1spt-BR!2sbr',
-        services: [
-          { name: 'Wedding Photography', category: 'Photography' },
-          { name: 'Portrait Sessions', category: 'Photography' }
         ]
       }
     ];
-    this.service = mock.find(s => s.id === id) || null;
+
+    if (id) {
+      this.service = mock.find(s => s.id === id) || null;
+      if (this.service) {
+        // Store original data for cancel functionality
+        this.originalService = JSON.parse(JSON.stringify(this.service));
+      }
+    }
+  }
+
+  toggleEditMode() {
+    if (this.isOwner && this.service) {
+      if (this.isEditMode) {
+        // Save changes and go back to view mode
+        this.saveChanges();
+        this.router.navigate(['/professional', this.service.id]);
+      } else {
+        // Enter edit mode
+        this.router.navigate(['/professional', this.service.id, 'edit']);
+      }
+    }
+  }
+
+  saveChanges() {
+    // Here you would implement the actual save logic
+    console.log('Saving changes...');
+    // In a real app, you'd make an API call to save the changes
+  }
+
+  cancelEdit() {
+    if (this.originalService && this.service) {
+      // Restore original data
+      this.service = JSON.parse(JSON.stringify(this.originalService));
+      this.router.navigate(['/professional', this.service!.id]);
+    }
+  }
+
+  addService() {
+    if (this.service) {
+      this.service.services.push({ name: '', category: '' });
+    }
+  }
+
+  removeService(index: number) {
+    if (this.service && this.service.services.length > 1) {
+      this.service.services.splice(index, 1);
+    }
   }
 
   getStars(rating: number): boolean[] {

@@ -8,6 +8,7 @@ export interface User {
   email: string;
   name: string;
   type: 'client' | 'provider';
+  professionalId?: string; // ID do perfil profissional
 }
 
 export interface LoginResponse {
@@ -53,7 +54,8 @@ export class AuthService {
       email: 'provider@test.com',
       password: '123456',
       name: 'Maria Santos',
-      type: 'provider'
+      type: 'provider',
+      professionalId: '5' // Salon Maria
     },
     {
       id: '3',
@@ -61,6 +63,14 @@ export class AuthService {
       password: 'admin123',
       name: 'Admin User',
       type: 'client'
+    },
+    {
+      id: '4',
+      email: 'beauty@test.com',
+      password: '123456',
+      name: 'Ana Beauty',
+      type: 'provider',
+      professionalId: '6' // Beauty Studio Ana
     }
   ];
 
@@ -211,13 +221,27 @@ export class AuthService {
           };
         }
 
+        // Generate professional ID for providers
+        let professionalId: string | undefined;
+        if (type === 'provider') {
+          // Generate a new professional ID (in a real app, this would come from the backend)
+          const existingProfessionalIds = this.mockUsers
+            .filter(u => u.professionalId)
+            .map(u => parseInt(u.professionalId!))
+            .sort((a, b) => b - a);
+          
+          const nextId = existingProfessionalIds.length > 0 ? existingProfessionalIds[0] + 1 : 14;
+          professionalId = nextId.toString();
+        }
+
         // Create new user
         const newUser: User & { password: string } = {
           id: (this.mockUsers.length + 1).toString(),
           email: email.toLowerCase(),
           password,
           name,
-          type
+          type,
+          professionalId
         };
 
         this.mockUsers.push(newUser);
@@ -226,7 +250,8 @@ export class AuthService {
           id: newUser.id,
           email: newUser.email,
           name: newUser.name,
-          type: newUser.type
+          type: newUser.type,
+          professionalId: newUser.professionalId
         };
 
         const token = this.generateToken(newUser.id);
@@ -266,6 +291,22 @@ export class AuthService {
    */
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
+  }
+
+  /**
+   * Get professional ID for current user
+   */
+  getProfessionalId(): string | null {
+    const user = this.getCurrentUser();
+    return user?.professionalId || null;
+  }
+
+  /**
+   * Check if current user is a professional
+   */
+  isProfessional(): boolean {
+    const user = this.getCurrentUser();
+    return user?.type === 'provider';
   }
 
   /**

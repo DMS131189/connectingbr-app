@@ -170,8 +170,9 @@
               type="submit" 
               expand="block" 
               size="large"
-              [disabled]="!name || !surname || !email || !confirmEmail || !password || !confirmPassword">
-              Create Account
+              [disabled]="!name || !surname || !email || !confirmEmail || !password || !confirmPassword || isLoading">
+              <ion-spinner *ngIf="isLoading" slot="start"></ion-spinner>
+              {{ isLoading ? 'CREATING ACCOUNT...' : 'Create Account' }}
             </ion-button>
           </div>
         </form>

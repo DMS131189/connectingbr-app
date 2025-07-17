@@ -1,69 +1,149 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>{{ service?.name || 'Profile' }}</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header></app-header>
 
 <ion-content [fullscreen]="true" *ngIf="service">
-  <div class="profile-header">
-    <div class="profile-avatar">
-      <ion-icon name="medkit-outline" size="large"></ion-icon>
-    </div>
-    <div class="profile-info">
-      <h2>{{ service.name }}</h2>
-      <div class="profile-specialty">{{ service.specialty }}</div>
-      <div class="profile-rating">
-        <span class="stars">
-          <ng-container *ngFor="let filled of getStars(service.rating)">
-            <ion-icon [name]="filled ? 'star' : 'star-outline'"></ion-icon>
-          </ng-container>
-        </span>
-        <span class="reviews">- {{ service.reviews }} reviews</span>
+  <!-- View Mode -->
+  <div *ngIf="!isEditMode">
+    <div class="profile-header">
+      <div class="profile-avatar">
+        <ion-icon name="medkit-outline" size="large"></ion-icon>
+      </div>
+      <div class="profile-info">
+        <h2>{{ service.name }}</h2>
+        <div class="profile-specialty">{{ service.specialty }}</div>
+        <div class="profile-rating">
+          <span class="stars">
+            <ng-container *ngFor="let filled of getStars(service.rating)">
+              <ion-icon [name]="filled ? 'star' : 'star-outline'"></ion-icon>
+            </ng-container>
+          </span>
+          <span class="reviews">- {{ service.reviews }} reviews</span>
+        </div>
       </div>
     </div>
+
+    <div class="profile-section">
+      <h3>Description</h3>
+      <p>{{ service.description }}</p>
+    </div>
+
+    <div class="profile-section info-list">
+      <div class="info-item">
+        <ion-icon name="location-outline"></ion-icon>
+        <span>{{ service.location }}</span>
+      </div>
+      <div class="info-item">
+        <ion-icon name="time-outline"></ion-icon>
+        <span>{{ service.hour }}</span>
+      </div>
+      <div class="info-item">
+        <ion-icon name="call-outline"></ion-icon>
+        <span>{{ service.contact }}</span>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <h3>Services</h3>
+      <div *ngFor="let s of service.services" class="service-item">
+        <div class="service-name">{{ s.name }}</div>
+        <div class="service-category">{{ s.category }}</div>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <h3>Photos</h3>
+      <div class="photos">
+        <img *ngFor="let photo of service.photos" [src]="photo" alt="Clinic photo" />
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <h3>Map</h3>
+      <div class="map-container">
+        <iframe [src]="service.mapUrl" width="100%" height="180" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <!-- Edit Button for Owner -->
+    <div class="profile-section" *ngIf="isOwner">
+      <ion-button expand="block" (click)="toggleEditMode()" color="primary">
+        <ion-icon name="create-outline" slot="start"></ion-icon>
+        Edit Profile
+      </ion-button>
+    </div>
   </div>
 
-  <div class="profile-section">
-    <h3>Description</h3>
-    <p>{{ service.description }}</p>
-  </div>
+  <!-- Edit Mode -->
+  <div *ngIf="isEditMode && isOwner">
+    <div class="edit-header">
+      <h2>Edit Profile</h2>
+      <p>Make changes to your professional profile</p>
+    </div>
 
-  <div class="profile-section info-list">
-    <div class="info-item">
-      <ion-icon name="location-outline"></ion-icon>
-      <span>{{ service.location }}</span>
+    <div class="profile-section">
+      <h3>Basic Information</h3>
+      <ion-item>
+        <ion-label position="stacked">Name</ion-label>
+        <ion-input [(ngModel)]="service.name" placeholder="Enter your name"></ion-input>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label position="stacked">Specialty</ion-label>
+        <ion-input [(ngModel)]="service.specialty" placeholder="Enter your specialty"></ion-input>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label position="stacked">Description</ion-label>
+        <ion-textarea [(ngModel)]="service.description" placeholder="Describe your services" rows="4"></ion-textarea>
+      </ion-item>
     </div>
-    <div class="info-item">
-      <ion-icon name="time-outline"></ion-icon>
-      <span>{{ service.hour }}</span>
-    </div>
-    <div class="info-item">
-      <ion-icon name="call-outline"></ion-icon>
-      <span>{{ service.contact }}</span>
-    </div>
-  </div>
 
-  <div class="profile-section">
-    <h3>Manage Services</h3>
-    <div *ngFor="let s of service.services" class="manage-service">
-      <div class="service-name">{{ s.name }}</div>
-      <div class="service-category">{{ s.category }}</div>
-      <ion-button size="small" fill="outline">Edit</ion-button>
-      <ion-button size="small" color="danger" fill="outline">Delete</ion-button>
+    <div class="profile-section">
+      <h3>Contact Information</h3>
+      <ion-item>
+        <ion-label position="stacked">Location</ion-label>
+        <ion-input [(ngModel)]="service.location" placeholder="Enter your address"></ion-input>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label position="stacked">Hours</ion-label>
+        <ion-input [(ngModel)]="service.hour" placeholder="e.g., 9:00 AM - 5:00 PM"></ion-input>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label position="stacked">Contact</ion-label>
+        <ion-input [(ngModel)]="service.contact" placeholder="Enter your phone number"></ion-input>
+      </ion-item>
     </div>
-  </div>
 
-  <div class="profile-section">
-    <h3>Photos</h3>
-    <div class="photos">
-      <img *ngFor="let photo of service.photos" [src]="photo" alt="Clinic photo" />
+    <div class="profile-section">
+      <h3>Services</h3>
+      <div *ngFor="let s of service.services; let i = index" class="service-edit-item">
+        <ion-item>
+          <ion-label position="stacked">Service Name</ion-label>
+          <ion-input [(ngModel)]="s.name" placeholder="Service name"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Category</ion-label>
+          <ion-input [(ngModel)]="s.category" placeholder="Service category"></ion-input>
+        </ion-item>
+        <ion-button size="small" color="danger" fill="outline" (click)="removeService(i)">Remove</ion-button>
+      </div>
+      <ion-button expand="block" fill="outline" (click)="addService()">
+        <ion-icon name="add-outline" slot="start"></ion-icon>
+        Add Service
+      </ion-button>
     </div>
-  </div>
 
-  <div class="profile-section">
-    <h3>Map</h3>
-    <div class="map-container">
-      <iframe [src]="service.mapUrl" width="100%" height="180" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    <div class="profile-section">
+      <h3>Actions</h3>
+      <ion-button expand="block" (click)="toggleEditMode()" color="success">
+        <ion-icon name="save-outline" slot="start"></ion-icon>
+        Save Changes
+      </ion-button>
+      <ion-button expand="block" fill="outline" (click)="cancelEdit()" color="medium">
+        <ion-icon name="close-outline" slot="start"></ion-icon>
+        Cancel
+      </ion-button>
     </div>
   </div>
 </ion-content>

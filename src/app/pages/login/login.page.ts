@@ -4,13 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonItem, IonInput, IonInputPasswordToggle, IonButton, IonImg, IonSpinner, IonToast, IonText } from '@ionic/angular/standalone';
 import { AuthService, LoginResponse } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
+import { AppHeaderComponent } from '../../components/app-header/app-header.component';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonText, IonToast, IonSpinner, IonImg, IonItem, IonContent, CommonModule, FormsModule, IonInput, IonInputPasswordToggle, IonButton]
+  imports: [AppHeaderComponent, IonText, IonToast, IonSpinner, IonImg, IonItem, IonContent, CommonModule, FormsModule, IonInput, IonInputPasswordToggle, IonButton]
 })
 export class LoginPage implements OnInit {
   email: string = '';
@@ -131,10 +132,14 @@ export class LoginPage implements OnInit {
           console.log('Login successful, navigating to home');
           this.showSuccessToast('Login successful! Welcome back.');
           
-          // Navigate to home immediately for better UX
-          this.router.navigate(['/home']).then(() => {
-            console.log('Navigation to home completed');
-          });
+          // Check if user is a professional and redirect accordingly
+          if (response.user?.type === 'provider' && response.user?.professionalId) {
+            // Redirect professional to their edit page
+            this.router.navigate(['/professional', response.user.professionalId, 'edit']);
+          } else {
+            // Redirect client to home page
+            this.router.navigate(['/home']);
+          }
         } else {
           console.log('Login failed:', response.message);
           this.errorMessage = response.message;

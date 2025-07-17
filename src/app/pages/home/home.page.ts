@@ -152,7 +152,15 @@ export class HomePage implements OnInit {
   }
 
   onServiceClick(service: Service) {
-    this.router.navigate(['/profile', service.id]);
+    this.router.navigate(['/professional', service.id]);
+  }
+
+  onRatingClick(event: Event, service: Service) {
+    // Prevent event bubbling to avoid triggering onServiceClick
+    event.stopPropagation();
+    
+    // Navigate to the professional profile
+    this.router.navigate(['/professional', service.id]);
   }
 
   onToastDismiss() {
