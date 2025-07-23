@@ -123,13 +123,15 @@ export class LoginPage implements OnInit {
     this.isLoading = true;
     this.clearError();
 
+    
     this.authService.login(this.email.trim(), this.password).subscribe({
       next: (response: LoginResponse) => {
+        debugger;
         console.log('Login response received:', response);
         this.isLoading = false;
-        
         if (response.success) {
           console.log('Login successful, navigating to home');
+
           this.showSuccessToast('Login successful! Welcome back.');
           
           // Check if user is a professional and redirect accordingly

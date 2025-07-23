@@ -110,10 +110,11 @@ export class AuthService {
     // Try backend first, fallback to mock if backend is unavailable
     return this.http.post<BackendLoginResponse>(`${this.apiUrl}/auth/login`, loginData, { headers })
       .pipe(
-        map((response: BackendLoginResponse) => {
-          if (response.success && response.data) {
-            const userProfile = response.data.user;
-            const token = response.data.token;
+        map((response: any) => {
+          debugger;
+         
+            const userProfile = response?.user;
+            const token = response?.token;
             
             // Store authentication
             this.storeAuth(userProfile, token);
@@ -125,12 +126,7 @@ export class AuthService {
               user: userProfile,
               token
             };
-          } else {
-            return {
-              success: false,
-              message: response.message || 'Login failed'
-            };
-          }
+       
         }),
         catchError((error) => {
           console.warn('Backend login failed, falling back to mock:', error);
