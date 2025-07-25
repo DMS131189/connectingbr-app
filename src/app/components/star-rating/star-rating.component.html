@@ -1,3 +1,16 @@
-<p>
-  star-rating works!
-</p>
+<div class="star-rating" [class.readonly]="readonly" [class.size-small]="size === 'small'" [class.size-medium]="size === 'medium'" [class.size-large]="size === 'large'">
+  <div class="stars-container">
+    <ion-icon 
+      *ngFor="let isFilled of stars; let i = index"
+      [name]="isFilled ? 'star' : 'star-outline'"
+      class="star"
+      [class.filled]="isFilled"
+      (click)="onStarClick(i)"
+      (mouseenter)="onStarHover(i)"
+      (mouseleave)="onStarLeave()">
+    </ion-icon>
+  </div>
+  <div class="rating-text" *ngIf="rating > 0">
+    {{ getRatingText() }}
+  </div>
+</div>

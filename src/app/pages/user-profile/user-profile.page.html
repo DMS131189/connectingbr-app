@@ -1,0 +1,141 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>My Profile</ion-title>
+    <ion-buttons slot="end">
+      @if (!isEditMode) {
+        <ion-button (click)="toggleEditMode()">
+          <ion-icon name="create"></ion-icon>
+        </ion-button>
+      }
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="profile-container">
+    <!-- Debug info -->
+    <p style="color: red; font-size: 12px;">Debug: currentUser = {{ currentUser | json }}</p>
+    @if (currentUser) {
+      <!-- User Avatar Section -->
+      <div class="avatar-section">
+        <div class="user-avatar">
+          <span class="avatar-text">{{ getUserInitials() }}</span>
+        </div>
+        <h2 class="user-name">{{ currentUser.name }}</h2>
+        <p class="user-type">{{ currentUser.type === 'provider' ? 'Service Provider' : 'Client' }}</p>
+      </div>
+
+      <!-- Profile Information -->
+      <ion-card class="profile-card">
+        <ion-card-header>
+          <ion-card-title>Profile Information</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          @if (!isEditMode) {
+            <!-- View Mode -->
+            <div class="info-row">
+              <label>Name:</label>
+              <span>{{ currentUser.name }}</span>
+            </div>
+            <div class="info-row">
+              <label>Email:</label>
+              <span>{{ currentUser.email }}</span>
+            </div>
+            <div class="info-row">
+              <label>Account Type:</label>
+              <span>{{ currentUser.type === 'provider' ? 'Service Provider' : 'Client' }}</span>
+            </div>
+            @if (currentUser.professionalId) {
+              <div class="info-row">
+                <label>Professional ID:</label>
+                <span>{{ currentUser.professionalId }}</span>
+              </div>
+            }
+          } @else {
+            <!-- Edit Mode -->
+            <ion-item>
+              <ion-label position="stacked">Name</ion-label>
+              <ion-input 
+                [(ngModel)]="editName" 
+                placeholder="Enter your name"
+                type="text">
+              </ion-input>
+            </ion-item>
+            
+            <ion-item>
+              <ion-label position="stacked">Email</ion-label>
+              <ion-input 
+                [(ngModel)]="editEmail" 
+                placeholder="Enter your email"
+                type="email">
+              </ion-input>
+            </ion-item>
+
+            <div class="edit-actions">
+              <ion-button fill="outline" (click)="cancelEdit()">
+                Cancel
+              </ion-button>
+              <ion-button (click)="saveChanges()">
+                Save Changes
+              </ion-button>
+            </div>
+          }
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Account Actions -->
+      <ion-card class="actions-card">
+        <ion-card-header>
+          <ion-card-title>Account Actions</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          @if (currentUser.type === 'provider' && currentUser.professionalId) {
+            <ion-button expand="block" fill="outline" (click)="goToProfessionalProfile()">
+              <ion-icon name="business" slot="start"></ion-icon>
+              View Professional Profile
+            </ion-button>
+          }
+          
+          <ion-button expand="block" fill="outline" color="medium">
+            <ion-icon name="settings" slot="start"></ion-icon>
+            Account Settings
+          </ion-button>
+          
+          <ion-button expand="block" fill="outline" color="medium">
+            <ion-icon name="notifications" slot="start"></ion-icon>
+            Notification Preferences
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    } @else {
+      <!-- Loading or Error State -->
+      <div class="loading-container">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Loading profile...</p>
+        <p>Debug: currentUser is {{ currentUser }}</p>
+        <p>If you're seeing this, please try logging in again.</p>
+        <ion-button (click)="goBack()" fill="outline">
+          Back to Home
+        </ion-button>
+        <ion-button (click)="goToLogin()" fill="outline" color="primary">
+          Go to Login
+        </ion-button>
+      </div>
+    }
+  </div>
+</ion-content>
+
+<!-- Toast Notification -->
+<ion-toast
+  [isOpen]="showToast"
+  [message]="toastMessage"
+  [duration]="2000"
+  position="top"
+  [color]="toastColor"
+  (didDismiss)="onToastDismiss()">
+</ion-toast> 

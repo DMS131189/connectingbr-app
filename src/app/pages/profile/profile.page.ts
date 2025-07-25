@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonItem, IonLabel, IonInput, IonTextarea } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonItem, IonLabel, IonInput, IonTextarea, IonToast } from '@ionic/angular/standalone';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppHeaderComponent } from '../../components/app-header/app-header.component';
+import { StarRatingComponent } from '../../components/star-rating/star-rating.component';
 import { AuthService } from '../../services/auth.service';
+import { addIcons } from 'ionicons';
+import { checkmarkCircle, checkmarkOutline } from 'ionicons/icons';
 
 interface ServiceProfile {
   id: string;
@@ -26,19 +29,28 @@ interface ServiceProfile {
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
   standalone: true,
-  imports: [AppHeaderComponent, IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonItem, IonLabel, IonInput, IonTextarea, CommonModule, FormsModule]
+  imports: [AppHeaderComponent, StarRatingComponent, IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonItem, IonLabel, IonInput, IonTextarea, IonToast, CommonModule, FormsModule]
 })
 export class ProfilePage implements OnInit {
   service: ServiceProfile | null = null;
   isEditMode: boolean = false;
   isOwner: boolean = false;
   originalService: ServiceProfile | null = null; // To store original data for cancel
+  
+  // Rating properties
+  userRating: number = 0;
+  ratingSubmitted: boolean = false;
+  showToast: boolean = false;
+  toastMessage: string = '';
+  toastColor: string = 'success';
 
   constructor(
     private route: ActivatedRoute, 
     private router: Router,
     private authService: AuthService
-  ) { }
+  ) {
+    addIcons({ checkmarkCircle, checkmarkOutline });
+  }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -341,5 +353,55 @@ export class ProfilePage implements OnInit {
   getStars(rating: number): boolean[] {
     const rounded = Math.round(rating);
     return Array(5).fill(false).map((_, i) => i < rounded);
+  }
+
+  // Rating methods
+  onRatingChange(rating: number) {
+    this.userRating = rating;
+    console.log('User rating changed to:', rating);
+  }
+
+  submitRating() {
+    if (this.userRating > 0 && this.service) {
+      // In a real app, you would make an API call to submit the rating
+      console.log('Submitting rating:', this.userRating, 'for service:', this.service.id);
+      
+      // Simulate API call
+      setTimeout(() => {
+        // Update the service rating (in a real app, this would come from the server)
+        if (this.service) {
+          const newReviews = this.service.reviews + 1;
+          const newRating = ((this.service.rating * this.service.reviews) + this.userRating) / newReviews;
+          
+          this.service.rating = Math.round(newRating * 10) / 10; // Round to 1 decimal place
+          this.service.reviews = newReviews;
+        }
+        
+        this.ratingSubmitted = true;
+        this.showSuccessToast('Rating submitted successfully!');
+        
+        // Reset user rating after a delay
+        setTimeout(() => {
+          this.userRating = 0;
+          this.ratingSubmitted = false;
+        }, 3000);
+      }, 1000);
+    }
+  }
+
+  showSuccessToast(message: string) {
+    this.toastMessage = message;
+    this.toastColor = 'success';
+    this.showToast = true;
+  }
+
+  showErrorToast(message: string) {
+    this.toastMessage = message;
+    this.toastColor = 'danger';
+    this.showToast = true;
+  }
+
+  onToastDismiss() {
+    this.showToast = false;
   }
 }

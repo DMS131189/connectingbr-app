@@ -63,6 +63,53 @@
       </div>
     </div>
 
+    <!-- Rating Section -->
+    <div class="profile-section">
+      <h3>Rate this Professional</h3>
+      <div class="rating-container">
+        <p class="rating-description">How would you rate your experience with this professional?</p>
+        
+        <!-- Current Average Rating Display -->
+        <div class="current-rating" *ngIf="service.rating > 0">
+          <p class="current-rating-label">Current Average Rating:</p>
+          <app-star-rating 
+            [rating]="service.rating" 
+            [readonly]="true" 
+            size="medium">
+          </app-star-rating>
+          <p class="reviews-count">{{ service.reviews }} reviews</p>
+        </div>
+        
+        <!-- User Rating Section -->
+        <div class="user-rating-section">
+          <p class="user-rating-label">Your Rating:</p>
+          <app-star-rating 
+            [(rating)]="userRating" 
+            [readonly]="false" 
+            size="large"
+            (ratingChange)="onRatingChange($event)">
+          </app-star-rating>
+          
+          <!-- Submit Rating Button -->
+          <ion-button 
+            *ngIf="userRating > 0 && !ratingSubmitted" 
+            expand="block" 
+            color="primary" 
+            (click)="submitRating()"
+            class="submit-rating-btn">
+            <ion-icon name="checkmark-outline" slot="start"></ion-icon>
+            Submit Rating
+          </ion-button>
+          
+          <!-- Rating Submitted Message -->
+          <div *ngIf="ratingSubmitted" class="rating-submitted">
+            <ion-icon name="checkmark-circle" color="success"></ion-icon>
+            <p>Thank you for your rating!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Edit Button for Owner -->
     <div class="profile-section" *ngIf="isOwner">
       <ion-button expand="block" (click)="toggleEditMode()" color="primary">
@@ -147,3 +194,13 @@
     </div>
   </div>
 </ion-content>
+
+<!-- Toast Notification -->
+<ion-toast
+  [isOpen]="showToast"
+  [message]="toastMessage"
+  [duration]="2000"
+  position="top"
+  [color]="toastColor"
+  (didDismiss)="onToastDismiss()">
+</ion-toast>

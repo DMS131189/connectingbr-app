@@ -219,7 +219,7 @@ export class HomePage implements OnInit, OnDestroy {
    * Navigate to profile page
    */
   goToProfile() {
-    this.router.navigate(['/profile']);
+    this.router.navigate(['/user-profile']);
     this.showUserMenu = false;
   }
 
