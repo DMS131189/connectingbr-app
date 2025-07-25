@@ -70,7 +70,7 @@ export class HomePage implements OnInit {
       name: 'Hair Styling',
       category: 'Beauty',
       description: 'Professional hair cutting and styling services',
-      price: 'R$ 45-80',
+      price: '€ 8-15',
       rating: 4.8,
       provider: 'Salon Maria'
     },
@@ -79,7 +79,7 @@ export class HomePage implements OnInit {
       name: 'Nutritionist Consultation',
       category: 'Health',
       description: 'Personalized nutrition plans and health assessment',
-      price: 'R$ 120-200',
+      price: '€ 20-35',
       rating: 4.9,
       provider: 'Dr. Ana Santos'
     },
@@ -88,7 +88,7 @@ export class HomePage implements OnInit {
       name: 'Home Cleaning',
       category: 'Services',
       description: 'Complete residential cleaning service',
-      price: 'R$ 80-150',
+      price: '€ 13-25',
       rating: 4.7,
       provider: 'Clean Home'
     }

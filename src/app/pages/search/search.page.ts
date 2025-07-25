@@ -91,7 +91,7 @@ export class SearchPage implements OnInit {
         name: 'Salon Maria',
         category: 'beauty',
         description: 'Professional hair cutting and styling',
-        price: '$45-80',
+        price: '€40-70',
         rating: 4.8,
         provider: 'Salon Maria',
         reviews: 50
@@ -101,7 +101,7 @@ export class SearchPage implements OnInit {
         name: 'Beauty Studio Ana',
         category: 'beauty',
         description: 'Makeup and beauty treatments',
-        price: '$60-120',
+        price: '€55-110',
         rating: 4.6,
         provider: 'Beauty Studio',
         reviews: 35
@@ -111,7 +111,7 @@ export class SearchPage implements OnInit {
         name: 'Nail Art Studio',
         category: 'beauty',
         description: 'Professional nail care and design',
-        price: '$30-60',
+        price: '€25-55',
         rating: 4.9,
         provider: 'Nail Studio',
         reviews: 28
@@ -121,7 +121,7 @@ export class SearchPage implements OnInit {
         name: 'Spa Relax',
         category: 'beauty',
         description: 'Massage and spa treatments',
-        price: '$80-150',
+        price: '€70-135',
         rating: 4.7,
         provider: 'Spa Center',
         reviews: 42
@@ -132,7 +132,7 @@ export class SearchPage implements OnInit {
         name: 'Clean Home',
         category: 'services',
         description: 'Complete residential cleaning',
-        price: '$80-150',
+        price: '€70-135',
         rating: 4.7,
         provider: 'Clean Home',
         reviews: 40
@@ -142,7 +142,7 @@ export class SearchPage implements OnInit {
         name: 'Tech Support Pro',
         category: 'services',
         description: 'Computer and IT support',
-        price: '$50-100',
+        price: '€45-90',
         rating: 4.5,
         provider: 'Tech Solutions',
         reviews: 25
@@ -152,7 +152,7 @@ export class SearchPage implements OnInit {
         name: 'Legal Consult',
         category: 'services',
         description: 'Legal consultation and advice',
-        price: '$120-200',
+        price: '€110-180',
         rating: 4.8,
         provider: 'Law Office',
         reviews: 18
@@ -162,7 +162,7 @@ export class SearchPage implements OnInit {
         name: 'Accounting Plus',
         category: 'services',
         description: 'Accounting and tax services',
-        price: '$90-180',
+        price: '€80-165',
         rating: 4.6,
         provider: 'Accounting Firm',
         reviews: 32
@@ -173,7 +173,7 @@ export class SearchPage implements OnInit {
         name: 'Pet Care Center',
         category: 'others',
         description: 'Veterinary and pet grooming',
-        price: '$40-80',
+        price: '€35-70',
         rating: 4.9,
         provider: 'Pet Care',
         reviews: 55
@@ -183,7 +183,7 @@ export class SearchPage implements OnInit {
         name: 'Tutor Academy',
         category: 'others',
         description: 'Private tutoring services',
-        price: '$30-60',
+        price: '€25-55',
         rating: 4.4,
         provider: 'Education Center',
         reviews: 22
@@ -193,7 +193,7 @@ export class SearchPage implements OnInit {
         name: 'Event Planner',
         category: 'others',
         description: 'Wedding and event planning',
-        price: '$200-500',
+        price: '€180-450',
         rating: 4.8,
         provider: 'Event Solutions',
         reviews: 38
@@ -203,7 +203,7 @@ export class SearchPage implements OnInit {
         name: 'Photography Pro',
         category: 'others',
         description: 'Professional photography',
-        price: '$150-300',
+        price: '€135-270',
         rating: 4.7,
         provider: 'Photo Studio',
         reviews: 29
