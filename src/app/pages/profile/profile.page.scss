@@ -110,6 +110,15 @@
   border: 1px solid #e0e0e0;
 }
 
+.map-wrapper {
+  position: relative;
+  z-index: 1;
+  margin-top: 8px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+}
+
 // Rating Section Styles
 .rating-container {
   display: flex;

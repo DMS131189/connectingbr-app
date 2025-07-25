@@ -8,6 +8,7 @@ import { StarRatingComponent } from '../../components/star-rating/star-rating.co
 import { AuthService } from '../../services/auth.service';
 import { addIcons } from 'ionicons';
 import { checkmarkCircle, checkmarkOutline } from 'ionicons/icons';
+import { MapSelectorComponent } from '../../components/map-selector/map-selector.component';
 
 interface ServiceProfile {
   id: string;
@@ -23,13 +24,13 @@ interface ServiceProfile {
   mapUrl: string;
   services: { name: string; category: string; }[];
 }
-
+ 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.page.html',
+  selector: 'app-profile', 
+  templateUrl: './profile.page.html', 
   styleUrls: ['./profile.page.scss'],
   standalone: true,
-  imports: [AppHeaderComponent, StarRatingComponent, IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonItem, IonLabel, IonInput, IonTextarea, IonToast, CommonModule, FormsModule]
+  imports: [AppHeaderComponent, StarRatingComponent, MapSelectorComponent, IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonItem, IonLabel, IonInput, IonTextarea, IonToast, CommonModule, FormsModule]
 })
 export class ProfilePage implements OnInit {
   service: ServiceProfile | null = null;
@@ -403,5 +404,9 @@ export class ProfilePage implements OnInit {
 
   onToastDismiss() {
     this.showToast = false;
+  }
+  
+  onLocationSelected(event: { lat: number; lng: number }): void {
+    console.log('Local selecionado:', event);
   }
 }

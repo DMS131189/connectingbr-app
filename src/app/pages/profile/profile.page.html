@@ -58,8 +58,8 @@
 
     <div class="profile-section">
       <h3>Map</h3>
-      <div class="map-container">
-        <iframe [src]="service.mapUrl" width="100%" height="180" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+      <div class="map-wrapper">
+        <app-map-selector></app-map-selector>
       </div>
     </div>
 
@@ -179,6 +179,14 @@
         <ion-icon name="add-outline" slot="start"></ion-icon>
         Add Service
       </ion-button>
+    </div>
+
+    <div class="profile-section">
+      <h3>Map</h3>
+      <app-map-selector (selectedLocation)="onLocationSelected($event)"></app-map-selector>
+      <!-- <div class="map-container">
+        <iframe [src]="service.mapUrl" width="100%" height="180" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+      </div> -->
     </div>
 
     <div class="profile-section">

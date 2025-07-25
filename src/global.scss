@@ -33,3 +33,28 @@
  */
 
 /* Tema claro é o padrão do Ionic */
+
+/* Leaflet CSS */
+@import "leaflet/dist/leaflet.css";
+
+/* Leaflet z-index fixes */
+.leaflet-container {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.leaflet-control-container {
+  z-index: 2 !important;
+}
+
+.leaflet-popup {
+  z-index: 3 !important;
+}
+
+.leaflet-popup-content-wrapper {
+  z-index: 3 !important;
+}
+
+.leaflet-popup-tip {
+  z-index: 3 !important;
+}
