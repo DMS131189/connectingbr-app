@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, IonSearchbar, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonToast, IonIcon, IonActionSheet } from '@ionic/angular/standalone';
@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { AuthService, User } from 'src/app/services/auth.service';
 import { addIcons } from 'ionicons';
 import { business, person, chevronDown, logOut, settings, personCircle } from 'ionicons/icons';
+import { Subscription } from 'rxjs';
 
 export interface Category {
   name: string;
@@ -32,7 +33,9 @@ export interface Service {
   standalone: true,
   imports: [IonActionSheet, IonIcon, IonToast, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons, IonButton, IonSearchbar, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle]
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, OnDestroy {
+  private userSubscription: Subscription = new Subscription();
+  
   categories: Category[] = [
     {
       name: 'Health',
@@ -134,9 +137,22 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
-    // Check if user is authenticated
+    // Subscribe to user changes
+    this.userSubscription = this.authService.currentUser$.subscribe(user => {
+      this.currentUser = user;
+      console.log('Current user updated:', this.currentUser);
+    });
+    
+    // Also get initial user state
     this.currentUser = this.authService.getCurrentUser();
-    console.log('Current user:', this.currentUser);
+    console.log('Initial current user:', this.currentUser);
+  }
+
+  ngOnDestroy() {
+    // Clean up subscription
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
   }
 
   onLogin() {
@@ -221,7 +237,7 @@ export class HomePage implements OnInit {
    */
   onLogout() {
     this.authService.logout();
-    this.currentUser = null;
+    // currentUser will be updated automatically via subscription
     this.toastMessage = 'You have been logged out successfully';
     this.showToast = true;
     this.showUserMenu = false;
