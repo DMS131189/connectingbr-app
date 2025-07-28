@@ -2,8 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders, HttpErrorResponse } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
 import { catchError, map } from "rxjs/operators";
-
-const API_BASE_URL = "http://localhost:3000";
+import { environment } from "../../environments/environment";
 
 export interface User {
   id: number;
@@ -82,7 +81,7 @@ export interface AverageRatingResponse {
   providedIn: "root"
 })
 export class ConnectingBrService {
-  private apiUrl = API_BASE_URL;
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
