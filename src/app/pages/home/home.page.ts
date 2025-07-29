@@ -5,7 +5,7 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, Ion
 import { Router } from '@angular/router';
 import { AuthService, User } from 'src/app/services/auth.service';
 import { addIcons } from 'ionicons';
-import { business, person, chevronDown, logOut, settings, personCircle } from 'ionicons/icons';
+import { business, person, chevronDown, logOut, settings, personCircle, personAdd } from 'ionicons/icons';
 import { Subscription } from 'rxjs';
 
 export interface Category {
@@ -133,7 +133,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   constructor(private router: Router, private authService: AuthService) {
     // Add icons
-    addIcons({ business, person, chevronDown, logOut, settings, personCircle });
+    addIcons({ business, person, chevronDown, logOut, settings, personCircle, personAdd });
   }
 
   ngOnInit() {
