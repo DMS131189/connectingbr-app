@@ -66,18 +66,17 @@
 
 ### Funcionalidades Pendentes
 - [x] Implementar lógica de autenticação real
-- [ ] Criar sistema de registro de usuários
-- [ ] Desenvolver página de perfil
-- [ ] Implementar busca de serviços
-- [ ] Criar sistema de categorias
+- [x] Criar sistema de registro de usuários
+- [x] Desenvolver página de perfil
+- [x] Implementar busca de serviços
+- [x] Criar sistema de categorias
 - [ ] Adicionar CRUD de serviços
-- [ ] Implementar sistema de avaliações
-- [ ] Adicionar geolocalização
+- [x] Implementar sistema de avaliações
+- [x] Adicionar geolocalização
 
 ### Melhorias de UI/UX
 - [ ] Criar loading states
 - [ ] Implementar toast notifications
-- [ ] Adicionar animações de transição
 - [ ] Criar componentes reutilizáveis
 - [ ] Implementar modo escuro (opcional)
 - [ ] Adicionar temas personalizados por categoria
