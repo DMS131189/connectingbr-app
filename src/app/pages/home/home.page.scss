@@ -55,15 +55,16 @@
         --background: #4A90E2;
         --background-hover: #417BC7;
         --color: white;
+        --border-color: #4A90E2;
         --border-radius: 8px;
-        --padding-top: 16px;
-        --padding-bottom: 16px;
+        --padding-start: 16px;
+        --padding-end: 16px;
         height: 40px;
         font-weight: 500;
         transition: all 0.3s ease;
         
         &:hover {
-          --background: rgba(74, 144, 226, 0.1);
+          --background: rgba(74, 144, 226, 0.75);
         }
       }
       
