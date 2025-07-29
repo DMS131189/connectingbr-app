@@ -189,38 +189,4 @@ export class LoginPage implements OnInit {
     this.showToast = false;
   }
 
-  /**
-   * Test login without complex validation
-   */
-  testLogin() {
-    console.log('Test login clicked');
-    if (!this.email || !this.password) {
-      console.log('Email or password empty');
-      return;
-    }
-
-    console.log('Starting test login with:', this.email, this.password);
-    this.isLoading = true;
-
-    this.authService.login(this.email, this.password).subscribe({
-      next: (response) => {
-        console.log('Test login response:', response);
-        this.isLoading = false;
-        if (response.success) {
-          console.log('Test login successful');
-          this.router.navigate(['/home']);
-        } else {
-          console.log('Test login failed:', response.message);
-          this.errorMessage = response.message;
-        }
-      },
-      error: (error) => {
-        console.error('Test login error:', error);
-        this.isLoading = false;
-        this.errorMessage = 'Test login error';
-      }
-    });
-  }
-
-
 }
