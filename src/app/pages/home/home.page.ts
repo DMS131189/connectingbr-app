@@ -155,6 +155,10 @@ export class HomePage implements OnInit, OnDestroy {
     }
   }
 
+  onRegister() {
+    this.router.navigate(['register']);
+  }
+
   onLogin() {
     this.router.navigate(['login']);
   }

@@ -54,9 +54,5 @@ export const routes: Routes = [
   {
     path: "professional/:id/edit",
     loadComponent: () => import("./pages/profile/profile.page").then( m => m.ProfilePage)
-  },
-  {
-    path: "backend-test",
-    loadComponent: () => import("./components/backend-test/backend-test.component").then( m => m.BackendTestComponent)
-  },
+  }
 ];
