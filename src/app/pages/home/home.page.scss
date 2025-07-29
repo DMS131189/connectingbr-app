@@ -52,25 +52,18 @@
       }
 
       .register-button {
-        --color: #4A90E2;
-        --border-color: #4A90E2;
-        --border-radius: 16px;
+        --background: #4A90E2;
+        --background-hover: #417BC7;
+        --color: white;
+        --border-radius: 8px;
         --padding-top: 16px;
         --padding-bottom: 16px;
-        font-size: 16px;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
+        height: 40px;
+        font-weight: 500;
         transition: all 0.3s ease;
         
         &:hover {
           --background: rgba(74, 144, 226, 0.1);
-        }
-        
-        &:disabled {
-          --color: #92A3B8;
-          --border-color: #92A3B8;
-          opacity: 0.6;
         }
       }
       
