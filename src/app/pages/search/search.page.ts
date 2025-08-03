@@ -1,49 +1,121 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonSearchbar, IonButton, IonIcon } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonSearchbar, IonButton, IonIcon, IonSpinner } from '@ionic/angular/standalone';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { AppHeaderComponent } from '../../components/app-header/app-header.component';
-
-interface Service {
-  id: string;
-  name: string;
-  category: string;
-  description: string;
-  price: string;
-  rating: number;
-  provider: string;
-  reviews: number;
-}
+import { ServiceService } from '../../services/service.service';
+import { Service } from '../../models/service.model';
+import { Subscription } from 'rxjs';
+import { addIcons } from 'ionicons';
+import { personCircleOutline, star, starOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.page.html',
   styleUrls: ['./search.page.scss'],
   standalone: true,
-  imports: [AppHeaderComponent, IonContent, IonHeader, IonTitle, IonToolbar, IonSearchbar, IonButton, IonIcon, CommonModule, FormsModule]
+  imports: [
+    AppHeaderComponent,
+    IonContent,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
+    IonSearchbar,
+    IonButton,
+    IonIcon,
+    IonSpinner,
+    CommonModule,
+    FormsModule
+  ]
 })
-export class SearchPage implements OnInit {
+export class SearchPage implements OnInit, OnDestroy {
   searchQuery: string = '';
-  category: string = '';
+  categoryId?: number;
   services: Service[] = [];
   filteredServices: Service[] = [];
+  isLoading = false;
+  error = '';
 
-  constructor(private route: ActivatedRoute, private router: Router) { }
+  private searchSubscription?: Subscription;
+  private queryParamsSubscription?: Subscription;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private serviceService: ServiceService
+  ) {
+    addIcons({ personCircleOutline, star, starOutline });
+  }
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
+    this.queryParamsSubscription = this.route.queryParams.subscribe(params => {
       this.searchQuery = params['q'] || '';
-      this.category = params['category'] || '';
+      this.categoryId = params['category'] ? Number(params['category']) : undefined;
       this.loadServices();
-      this.filterServices();
     });
   }
 
+  ngOnDestroy() {
+    this.searchSubscription?.unsubscribe();
+    this.queryParamsSubscription?.unsubscribe();
+  }
+
   loadServices() {
-    // Serviços fictícios para exemplo
-    this.services = [
+    this.isLoading = true;
+    this.error = '';
+    
+    this.searchSubscription = this.serviceService
+      .search({
+        categoryId: this.categoryId,
+        query: this.searchQuery
+      })
+      .subscribe({
+        next: (services) => {
+          this.services = services;
+          this.filteredServices = services;
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Error loading services:', error);
+          this.error = 'Failed to load services. Please try again later.';
+          this.isLoading = false;
+          this.services = [];
+          this.filteredServices = [];
+        }
+      });
+  }
+
+  onSearchChange(event: any) {
+    const query = event.target.value?.toLowerCase() || '';
+    this.searchQuery = query;
+    
+    // Atualizar a URL com o novo termo de busca
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { 
+        q: query || null,
+        category: this.categoryId || null 
+      },
+      queryParamsHandling: 'merge'
+    });
+
+    this.loadServices();
+  }
+
+  getStars(rating: number): boolean[] {
+    return Array(5).fill(0).map((_, i) => rating > i);
+  }
+
+  goToProfile(service: Service) {
+    this.router.navigate(['/professional', service.id]);
+  }
+
+  onCall(service: Service) {
+    // Implementar a lógica de chamada aqui
+    console.log('Calling service:', service);
+  }
       // Health Services
       {
         id: '1',
