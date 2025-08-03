@@ -43,19 +43,38 @@
   </ion-header>
    <ion-searchbar placeholder="Search for services..." (ionInput)="onSearch($event)"></ion-searchbar>
  
+  @if (error) {
+    <div class="error-message">
+      {{ error }}
+    </div>
+  }
+
   <div class="categories-section">
     <h2 class="section-title">Categories</h2>
     <div class="category-grid">
-      @for (category of categories; track category.value) {
-        <div class="category-item" [attr.data-category]="category.value" (click)="onCategoryClick(category)">
+      @for (category of categories; track category.id) {
+        <div class="category-item" [attr.data-category]="category.name.toLowerCase()" (click)="onCategoryClick(category)">
           <div class="category-icon">
-            <img [src]="category.image" [alt]="category.name" />
+            @if (category.icon) {
+              <img [src]="category.icon" [alt]="category.name" />
+            } @else {
+              <ion-icon name="grid-outline"></ion-icon>
+            }
           </div>
           <span class="category-label">{{ category.name }}</span>
+          @if (category.description) {
+            <small class="category-description">{{ category.description }}</small>
+          }
         </div>
       }
     </div>
   </div>
+
+  @if (categories.length === 0 && !error) {
+    <div class="no-categories">
+      <p>No categories found.</p>
+    </div>
+  }
 
   <div class="recent-services" *ngIf="recentServices?.length">
     <h2 class="section-title">Recent Services</h2>

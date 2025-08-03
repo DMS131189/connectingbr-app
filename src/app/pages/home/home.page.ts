@@ -4,17 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, IonSearchbar, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonToast, IonIcon, IonActionSheet } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { AuthService, User } from 'src/app/services/auth.service';
+import { CategoryService } from 'src/app/services/category.service';
+import { Category } from 'src/app/models/category.model';
 import { addIcons } from 'ionicons';
-import { business, person, chevronDown, logOut, settings, personCircle, personAdd } from 'ionicons/icons';
+import { business, person, chevronDown, logOut, settings, personCircle, personAdd, gridOutline } from 'ionicons/icons';
 import { Subscription } from 'rxjs';
-
-export interface Category {
-  name: string;
-  value: string;
-  image: string;
-  description: string;
-  color: string;
-}
 
 export interface Service {
   id: string;
@@ -31,41 +25,19 @@ export interface Service {
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [IonActionSheet, IonIcon, IonToast, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons, IonButton, IonSearchbar, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle]
+  imports: [IonActionSheet, IonIcon, IonToast, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons, IonButton, IonSearchbar, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle],
+  providers: [CategoryService]
 })
 export class HomePage implements OnInit, OnDestroy {
   private userSubscription: Subscription = new Subscription();
+  private categorySubscription: Subscription = new Subscription();
   
-  categories: Category[] = [
-    {
-      name: 'Health',
-      value: 'health',
-      image: 'assets/images/helth.png',
-      description: 'Medical and wellness services',
-      color: '#20B2AA'
-    },
-    {
-      name: 'Beauty',
-      value: 'beauty',
-      image: 'assets/images/beauty.png',
-      description: 'Beauty and aesthetic services',
-      color: '#FF69B4'
-    },
-    {
-      name: 'Services',
-      value: 'services',
-      image: 'assets/images/services.png',
-      description: 'General and professional services',
-      color: '#4169E1'
-    },
-    {
-      name: 'Others',
-      value: 'others',
-      image: 'assets/images/others.png',
-      description: 'Other specialized services',
-      color: '#6A5ACD'
-    }
-  ];
+  categories: Category[] = [];
+  error: string = '';
+  showToast = false;
+  toastMessage = '';
+  showUserMenu = false;
+  currentUser: User | null = null;
 
   recentServices: Service[] = [
     {
@@ -97,11 +69,6 @@ export class HomePage implements OnInit, OnDestroy {
     }
   ];
 
-  showToast: boolean = false;
-  toastMessage: string = '';
-  currentUser: User | null = null;
-  showUserMenu: boolean = false;
-
   userMenuButtons = [
     {
       text: 'Profile',
@@ -131,7 +98,11 @@ export class HomePage implements OnInit, OnDestroy {
     }
   ];
 
-  constructor(private router: Router, private authService: AuthService) {
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private categoryService: CategoryService
+  ) {
     // Add icons
     addIcons({ business, person, chevronDown, logOut, settings, personCircle, personAdd });
   }
@@ -146,13 +117,31 @@ export class HomePage implements OnInit, OnDestroy {
     // Also get initial user state
     this.currentUser = this.authService.getCurrentUser();
     console.log('Initial current user:', this.currentUser);
+
+    // Load categories
+    this.loadCategories();
   }
 
   ngOnDestroy() {
-    // Clean up subscription
+    // Clean up subscriptions
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
     }
+    if (this.categorySubscription) {
+      this.categorySubscription.unsubscribe();
+    }
+  }
+
+  loadCategories() {
+    this.categorySubscription = this.categoryService.getAll().subscribe({
+      next: (categories) => {
+        this.categories = categories;
+      },
+      error: (error) => {
+        console.error('Error loading categories:', error);
+        this.error = 'Failed to load categories. Please try again later.';
+      }
+    });
   }
 
   onRegister() {
@@ -167,7 +156,7 @@ export class HomePage implements OnInit, OnDestroy {
     console.log('Category clicked:', category);
     // Redireciona para a página de busca filtrando pela categoria
     this.router.navigate(['/search'], {
-      queryParams: { category: category.value }
+      queryParams: { category: category.id }
     });
   }
 
