@@ -154,8 +154,8 @@ export class HomePage implements OnInit, OnDestroy {
 
   onCategoryClick(category: Category) {
     console.log('Category clicked:', category);
-    // Redireciona para a página de busca filtrando pela categoria
-    this.router.navigate(['/search'], {
+    // Redireciona para a página de serviços filtrando pela categoria
+    this.router.navigate(['/services'], {
       queryParams: { category: category.id }
     });
   }
