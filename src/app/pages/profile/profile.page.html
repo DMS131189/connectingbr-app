@@ -1,8 +1,22 @@
 <app-header></app-header>
 
-<ion-content [fullscreen]="true" *ngIf="service">
-  <!-- View Mode -->
-  <div *ngIf="!isEditMode">
+<ion-content [fullscreen]="true">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner name="dots"></ion-spinner>
+    <p>Carregando perfil...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="error-container">
+    <p>{{ error }}</p>
+    <ion-button (click)="loadProfessionalData(service?.id)">Tentar novamente</ion-button>
+  </div>
+
+  <!-- Content when loaded -->
+  <div *ngIf="service && !isLoading && !error">
+    <!-- View Mode -->
+    <div *ngIf="!isEditMode">
     <div class="profile-header">
       <div class="profile-avatar">
         <ion-icon name="medkit-outline" size="large"></ion-icon>
@@ -112,7 +126,7 @@
 
     <!-- Edit Button for Owner -->
     <div class="profile-section" *ngIf="isOwner">
-      <ion-button expand="block" (click)="toggleEditMode()" color="primary">
+      <ion-button expand="block" (click)="onEditClick()" color="primary">
         <ion-icon name="create-outline" slot="start"></ion-icon>
         Edit Profile
       </ion-button>
@@ -191,24 +205,25 @@
 
     <div class="profile-section">
       <h3>Actions</h3>
-      <ion-button expand="block" (click)="toggleEditMode()" color="success">
+      <ion-button expand="block" (click)="onSaveClick()" color="success">
         <ion-icon name="save-outline" slot="start"></ion-icon>
         Save Changes
       </ion-button>
-      <ion-button expand="block" fill="outline" (click)="cancelEdit()" color="medium">
+      <ion-button expand="block" fill="outline" (click)="onCancelClick()" color="medium">
         <ion-icon name="close-outline" slot="start"></ion-icon>
         Cancel
       </ion-button>
     </div>
   </div>
-</ion-content>
+</div>
 
-<!-- Toast Notification -->
+<!-- Toast -->
 <ion-toast
   [isOpen]="showToast"
   [message]="toastMessage"
-  [duration]="2000"
-  position="top"
   [color]="toastColor"
-  (didDismiss)="onToastDismiss()">
-</ion-toast>
+  [duration]="3000"
+  (didDismiss)="onToastDismiss()"
+  position="top"
+></ion-toast>
+</ion-content>

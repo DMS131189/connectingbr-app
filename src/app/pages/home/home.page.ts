@@ -104,7 +104,7 @@ export class HomePage implements OnInit, OnDestroy {
     private categoryService: CategoryService
   ) {
     // Add icons
-    addIcons({ business, person, chevronDown, logOut, settings, personCircle, personAdd });
+    addIcons({business,chevronDown,personAdd,person,gridOutline,logOut,settings,personCircle});
   }
 
   ngOnInit() {
