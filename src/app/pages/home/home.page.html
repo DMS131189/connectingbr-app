@@ -22,6 +22,10 @@
         </ion-button>
       } @else {
         <!-- Usuário não logado -->
+        <ion-button fill="outline" class="register-button feedback" (click)="onFeedback()">
+          <ion-icon name="person-add" slot="start"></ion-icon>
+          Feedback
+        </ion-button>
         <ion-button fill="outline" class="register-button" (click)="onRegister()">
           <ion-icon name="person-add" slot="start"></ion-icon>
           Register
