@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, IonSearchbar, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonToast, IonIcon, IonActionSheet } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, IonSearchbar, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonToast, IonIcon, IonActionSheet, IonSpinner } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { AuthService, User } from 'src/app/services/auth.service';
 import { CategoryService } from 'src/app/services/category.service';
@@ -22,7 +22,7 @@ export interface Service extends Omit<BackendService, 'category'> {
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [IonActionSheet, IonIcon, IonToast, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons, IonButton, IonSearchbar, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle],
+  imports: [IonActionSheet, IonIcon, IonToast, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons, IonButton, IonSearchbar, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonSpinner],
   providers: [CategoryService]
 })
 export class HomePage implements OnInit, OnDestroy {
