@@ -1,5 +1,6 @@
 export interface Service {
   id: string;
+  professionalId: any;
   name: string;
   category: {
     id: number;

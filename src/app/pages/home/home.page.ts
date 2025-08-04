@@ -150,7 +150,7 @@ export class HomePage implements OnInit, OnDestroy {
   onCategoryClick(category: Category) {
     console.log('Category clicked:', category);
     // Redireciona para a página de serviços filtrando pela categoria
-    this.router.navigate(['/services'], {
+    this.router.navigate(['/search'], {
       queryParams: { category: category.id }
     });
   }
@@ -162,9 +162,12 @@ export class HomePage implements OnInit, OnDestroy {
   onRatingClick(event: Event, service: Service) {
     // Prevent event bubbling to avoid triggering onServiceClick
     event.stopPropagation();
+
+    console.log('>>> Rating clicked for event:', event);
+    console.log('>>> Rating clicked for service:', service);
     
     // Navigate to the professional profile
-    this.router.navigate(['/professional', service.id]);
+    this.router.navigate(['/professional', service.professionalId]);
   }
 
   onToastDismiss() {
