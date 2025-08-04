@@ -11,7 +11,7 @@ import { AppHeaderComponent } from '../../components/app-header/app-header.compo
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [AppHeaderComponent, IonText, IonToast, IonSpinner, IonImg, IonItem, IonContent, CommonModule, FormsModule, IonInput, IonInputPasswordToggle, IonButton]
+  imports: [AppHeaderComponent, IonText, IonToast, IonSpinner, IonItem, IonContent, CommonModule, FormsModule, IonInput, IonInputPasswordToggle, IonButton]
 })
 export class LoginPage implements OnInit {
   email: string = '';

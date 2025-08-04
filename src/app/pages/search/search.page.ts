@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonSearchbar, IonButton, IonIcon, IonSpinner } from '@ionic/angular/standalone';
+import { IonContent, IonSearchbar, IonButton, IonIcon, IonSpinner } from '@ionic/angular/standalone';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { AppHeaderComponent } from '../../components/app-header/app-header.component';
@@ -19,9 +19,6 @@ import { personCircleOutline, star, starOutline } from 'ionicons/icons';
   imports: [
     AppHeaderComponent,
     IonContent,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
     IonSearchbar,
     IonButton,
     IonIcon,

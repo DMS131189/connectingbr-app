@@ -130,8 +130,6 @@ import { Subscription } from 'rxjs';
     IonList,
     IonItem,
     IonLabel,
-    IonButton,
-    IonIcon,
     IonSearchbar,
     IonSelect,
     IonSelectOption,

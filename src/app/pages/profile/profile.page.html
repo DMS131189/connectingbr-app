@@ -10,7 +10,7 @@
   <!-- Error State -->
   <div *ngIf="error" class="error-container">
     <p>{{ error }}</p>
-    <ion-button (click)="loadProfessionalData(service?.id)">Tentar novamente</ion-button>
+    <ion-button (click)="retryLoad()">Tentar novamente</ion-button>
   </div>
 
   <!-- Content when loaded -->

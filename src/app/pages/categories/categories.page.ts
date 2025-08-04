@@ -23,7 +23,7 @@ import { Router } from '@angular/router';
     IonList,
     IonItem,
     IonLabel,
-    IonButton,
+
     IonIcon
   ]
 })

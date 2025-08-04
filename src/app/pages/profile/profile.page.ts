@@ -26,9 +26,6 @@ import { ServiceProfile } from '../../models/service-profile.model';
     CommonModule,
     FormsModule,
     IonContent,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
     IonButton,
     IonIcon,
     IonItem,
@@ -198,6 +195,12 @@ export class ProfilePage implements OnInit, OnDestroy {
       };
     }
     this.isEditMode = false;
+  }
+
+  retryLoad(): void {
+    if (this.service?.id) {
+      this.loadProfessionalData(Number(this.service.id));
+    }
   }
 
   onRatingChange(rating: number): void {
