@@ -101,7 +101,11 @@ export class ProfilePage implements OnInit, OnDestroy {
     return currentUser?.type === 'provider';
   }
 
-  loadProfessionalData(professionalId: number): void {
+  loadProfessionalData(professionalId: number | undefined): void {
+    if (professionalId === undefined) {
+      this.error = 'ID do profissional não encontrado';
+      return;
+    }
     this.isLoading = true;
     this.error = '';
 
