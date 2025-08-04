@@ -5,19 +5,16 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, Ion
 import { Router } from '@angular/router';
 import { AuthService, User } from 'src/app/services/auth.service';
 import { CategoryService } from 'src/app/services/category.service';
+import { ServiceService } from 'src/app/services/service.service';
 import { Category } from 'src/app/models/category.model';
 import { addIcons } from 'ionicons';
 import { business, person, chevronDown, logOut, settings, personCircle, personAdd, gridOutline } from 'ionicons/icons';
 import { Subscription } from 'rxjs';
 
-export interface Service {
-  id: string;
-  name: string;
+import { Service as BackendService } from '../../models/service.model';
+
+export interface Service extends Omit<BackendService, 'category'> {
   category: string;
-  description: string;
-  price: string;
-  rating: number;
-  provider: string;
 }
 
 @Component({
@@ -39,35 +36,8 @@ export class HomePage implements OnInit, OnDestroy {
   showUserMenu = false;
   currentUser: User | null = null;
 
-  recentServices: Service[] = [
-    {
-      id: '1',
-      name: 'Hair Styling',
-      category: 'Beauty',
-      description: 'Professional hair cutting and styling services',
-      price: '€ 8-15',
-      rating: 4.8,
-      provider: 'Salon Maria'
-    },
-    {
-      id: '2',
-      name: 'Nutritionist Consultation',
-      category: 'Health',
-      description: 'Personalized nutrition plans and health assessment',
-      price: '€ 20-35',
-      rating: 4.9,
-      provider: 'Dr. Ana Santos'
-    },
-    {
-      id: '3',
-      name: 'Home Cleaning',
-      category: 'Services',
-      description: 'Complete residential cleaning service',
-      price: '€ 13-25',
-      rating: 4.7,
-      provider: 'Clean Home'
-    }
-  ];
+  recentServices: Service[] = [];
+  isLoadingServices = false;
 
   userMenuButtons = [
     {
@@ -98,10 +68,13 @@ export class HomePage implements OnInit, OnDestroy {
     }
   ];
 
+  private serviceSubscription: Subscription = new Subscription();
+
   constructor(
     private router: Router,
     private authService: AuthService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private serviceService: ServiceService
   ) {
     // Add icons
     addIcons({business,chevronDown,personAdd,person,gridOutline,logOut,settings,personCircle});
@@ -118,8 +91,27 @@ export class HomePage implements OnInit, OnDestroy {
     this.currentUser = this.authService.getCurrentUser();
     console.log('Initial current user:', this.currentUser);
 
-    // Load categories
+    // Load categories and recent services
     this.loadCategories();
+    this.loadRecentServices();
+  }
+
+  loadRecentServices() {
+    this.isLoadingServices = true;
+    this.serviceSubscription = this.serviceService.getAll().subscribe({
+      next: (services) => {
+        this.recentServices = services.slice(0, 6).map(service => ({
+          ...service,
+          category: service.category.name
+        }));
+        this.isLoadingServices = false;
+      },
+      error: (error) => {
+        console.error('Erro ao carregar serviços:', error);
+        this.error = 'Não foi possível carregar os serviços recentes.';
+        this.isLoadingServices = false;
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -129,6 +121,9 @@ export class HomePage implements OnInit, OnDestroy {
     }
     if (this.categorySubscription) {
       this.categorySubscription.unsubscribe();
+    }
+    if (this.serviceSubscription) {
+      this.serviceSubscription.unsubscribe();
     }
   }
 

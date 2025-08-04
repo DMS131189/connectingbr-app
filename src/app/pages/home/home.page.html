@@ -80,10 +80,28 @@
     </div>
   }
 
-  <div class="recent-services" *ngIf="recentServices?.length">
+  <div class="recent-services">
     <h2 class="section-title">Recent Services</h2>
-    <div class="services-list">
-      @for (service of recentServices; track service.id) {
+    
+    <!-- Loading state -->
+    @if (isLoadingServices) {
+      <div class="loading-container">
+        <ion-spinner></ion-spinner>
+        <p>Carregando serviços...</p>
+      </div>
+    }
+
+    <!-- No services found -->
+    @if (!isLoadingServices && recentServices.length === 0) {
+      <div class="no-services">
+        <p>Nenhum serviço encontrado.</p>
+      </div>
+    }
+
+    <!-- Services list -->
+    @if (!isLoadingServices && recentServices.length > 0) {
+      <div class="services-list">
+        @for (service of recentServices; track service.id) {
         <ion-card class="service-card" (click)="onServiceClick(service)">
           <ion-card-header>
             <ion-card-title>{{ service.name }}</ion-card-title>
