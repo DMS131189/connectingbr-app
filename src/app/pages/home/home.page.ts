@@ -247,4 +247,8 @@ export class HomePage implements OnInit, OnDestroy {
   onUserMenuDismiss() {
     this.showUserMenu = false;
   }
+
+  onFeedback() {
+    window.open('https://docs.google.com/forms/d/1-Ypj3SAlt34EL0RS_2I9pIKVitCsgQc4vX0Ln6vQ2TQ/edit', '_blank');
+  }
 }
