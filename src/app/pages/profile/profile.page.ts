@@ -128,7 +128,18 @@ export class ProfilePage implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error('Error loading professional:', error);
-        this.error = 'Failed to load professional information';
+        
+        // More detailed error handling
+        if (error.status === 0) {
+          this.error = 'Unable to connect to server. Please check your internet connection.';
+        } else if (error.status === 404) {
+          this.error = 'Professional not found.';
+        } else if (error.status >= 500) {
+          this.error = 'Server error. Please try again later.';
+        } else {
+          this.error = `Failed to load professional information. Error: ${error.status}`;
+        }
+        
         this.isLoading = false;
       }
     });
@@ -198,8 +209,9 @@ export class ProfilePage implements OnInit, OnDestroy {
   }
 
   retryLoad(): void {
-    if (this.service?.id) {
-      this.loadProfessionalData(Number(this.service.id));
+    const professionalId = this.route.snapshot.paramMap.get('id');
+    if (professionalId) {
+      this.loadProfessionalData(Number(professionalId));
     }
   }
 
