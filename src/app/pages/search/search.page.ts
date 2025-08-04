@@ -60,23 +60,37 @@ export class SearchPage implements OnInit, OnDestroy {
   }
 
   loadServices() {
+    if (this.searchSubscription) {
+      this.searchSubscription.unsubscribe();
+    }
+    
     this.isLoading = true;
     this.error = '';
     
+    const searchParams: any = {};
+    
+    if (this.categoryId) {
+      searchParams.categoryId = this.categoryId;
+    }
+    
+    if (this.searchQuery && this.searchQuery.trim()) {
+      searchParams.query = this.searchQuery.trim();
+    }
+    
     this.searchSubscription = this.serviceService
-      .search({
-        categoryId: this.categoryId,
-        query: this.searchQuery
-      })
+      .search(searchParams)
       .subscribe({
         next: (services) => {
           this.services = services;
           this.filteredServices = services;
           this.isLoading = false;
+          if (services.length === 0) {
+            this.error = 'Nenhum serviço encontrado para esta busca.';
+          }
         },
         error: (error) => {
-          console.error('Error loading services:', error);
-          this.error = 'Failed to load services. Please try again later.';
+          console.error('Erro ao carregar serviços:', error);
+          this.error = 'Não foi possível carregar os serviços. Por favor, tente novamente mais tarde.';
           this.isLoading = false;
           this.services = [];
           this.filteredServices = [];

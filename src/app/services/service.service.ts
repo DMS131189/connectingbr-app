@@ -48,23 +48,23 @@ export class ServiceService {
     const queryParams = new URLSearchParams();
     
     if (params.categoryId) {
-      queryParams.set('categoryId', params.categoryId.toString());
+      queryParams.set('categoria', params.categoryId.toString());
     }
     if (params.query) {
-      queryParams.set('query', params.query);
+      queryParams.set('q', params.query);
     }
     if (params.minPrice) {
-      queryParams.set('minPrice', params.minPrice.toString());
+      queryParams.set('precoMin', params.minPrice.toString());
     }
     if (params.maxPrice) {
-      queryParams.set('maxPrice', params.maxPrice.toString());
+      queryParams.set('precoMax', params.maxPrice.toString());
     }
     if (params.minRating) {
-      queryParams.set('minRating', params.minRating.toString());
+      queryParams.set('avaliacaoMin', params.minRating.toString());
     }
 
     const queryString = queryParams.toString();
-    const url = queryString ? `${this.apiUrl}?${queryString}` : this.apiUrl;
+    const url = queryString ? `${this.apiUrl}/search?${queryString}` : `${this.apiUrl}/search`;
 
     return this.http.get<Service[]>(url);
   }
