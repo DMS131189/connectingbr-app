@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { AppHeaderComponent } from '../../components/app-header/app-header.component';
 import { ServiceService } from '../../services/service.service';
+import { CategoryService } from '../../services/category.service';
 import { Service } from '../../models/service.model';
 import { Subscription } from 'rxjs';
 import { addIcons } from 'ionicons';
@@ -30,6 +31,7 @@ import { personCircleOutline, star, starOutline } from 'ionicons/icons';
 export class SearchPage implements OnInit, OnDestroy {
   searchQuery: string = '';
   categoryId?: number;
+  categoryName: string = '';
   services: Service[] = [];
   filteredServices: Service[] = [];
   isLoading = false;
@@ -41,15 +43,33 @@ export class SearchPage implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private serviceService: ServiceService
+    private serviceService: ServiceService,
+    private categoryService: CategoryService
   ) {
     addIcons({ personCircleOutline, star, starOutline });
+  }
+
+  private loadCategory() {
+    if (this.categoryId) {
+      this.categoryService.getById(this.categoryId).subscribe({
+        next: (category) => {
+          this.categoryName = category.name;
+        },
+        error: (error) => {
+          console.error('Erro ao carregar categoria:', error);
+          this.categoryName = '';
+        }
+      });
+    } else {
+      this.categoryName = '';
+    }
   }
 
   ngOnInit() {
     this.queryParamsSubscription = this.route.queryParams.subscribe(params => {
       this.searchQuery = params['q'] || '';
       this.categoryId = params['category'] ? Number(params['category']) : undefined;
+      this.loadCategory();
       this.loadServices();
     });
   }
