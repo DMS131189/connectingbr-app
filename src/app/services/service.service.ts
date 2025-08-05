@@ -48,19 +48,19 @@ export class ServiceService {
     const queryParams = new URLSearchParams();
     
     if (params.categoryId) {
-      queryParams.set('categoria', params.categoryId.toString());
+      queryParams.set('categoryId', params.categoryId.toString());
     }
     if (params.query) {
-      queryParams.set('q', params.query);
+      queryParams.set('query', params.query);
     }
     if (params.minPrice) {
-      queryParams.set('precoMin', params.minPrice.toString());
+      queryParams.set('minPrice', params.minPrice.toString());
     }
     if (params.maxPrice) {
-      queryParams.set('precoMax', params.maxPrice.toString());
+      queryParams.set('maxPrice', params.maxPrice.toString());
     }
     if (params.minRating) {
-      queryParams.set('avaliacaoMin', params.minRating.toString());
+      queryParams.set('minRating', params.minRating.toString());
     }
 
     const queryString = queryParams.toString();
