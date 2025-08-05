@@ -100,7 +100,7 @@ export class ProfilePage implements OnInit, OnDestroy {
     this.isLoading = true;
     this.error = '';
 
-    this.professionalSub = this.professionalService.getById(professionalId).subscribe({
+    this.professionalSub = this.professionalService.getById(Number(professionalId)).subscribe({
       next: (professional: any) => {
         this.service = {
           id: professional.id.toString(),
@@ -199,13 +199,45 @@ export class ProfilePage implements OnInit, OnDestroy {
     }
   }
 
+  onRatingChange(rating: number): void {
+    this.userRating = rating;
+  }
+
+  submitRating(): void {
+    if (!this.service || !this.userRating) return;
+
+    // TODO: Implement rating submission to backend
+    this.ratingSubmitted = true;
+    this.showToast = true;
+    this.toastMessage = 'Rating submitted successfully!';
+    this.toastColor = 'success';
+  }
+
+  removeService(index: number): void {
+    if (this.service && this.service.services) {
+      this.service.services.splice(index, 1);
+    }
+  }
+
+  addService(): void {
+    if (this.service) {
+      this.service.services.push({
+        name: '',
+        category: ''
+      });
+    }
+  }
+
+  onLocationSelected(location: any): void {
+    if (this.service) {
+      this.service.location = location.address || 'Location not available';
+      // TODO: Update map coordinates if needed
+    }
+  }
+
   getStars(rating: number): boolean[] {
     const rounded = Math.round(rating);
     return Array(5).fill(false).map((_, i) => i < rounded);
-  }
-
-  onRatingChange(rating: number): void {
-    this.userRating = rating;
   }
 
   onToastDismiss(): void {
