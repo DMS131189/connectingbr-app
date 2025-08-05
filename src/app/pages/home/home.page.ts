@@ -156,7 +156,7 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   onServiceClick(service: Service) {
-    this.router.navigate(['/professional', service.id]);
+    this.router.navigate(['/professional', service.professionalId]);
   }
 
   onRatingClick(event: Event, service: Service) {

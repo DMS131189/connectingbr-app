@@ -13,6 +13,10 @@ export class ProfessionalService {
 
   constructor(private http: HttpClient) {}
 
+  getAll(): Observable<User[]> {
+    return this.http.get<User[]>(this.apiUrl);
+  }
+
   getById(id: number): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/${id}`);
   }

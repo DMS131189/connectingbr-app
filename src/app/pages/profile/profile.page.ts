@@ -7,6 +7,8 @@ import { AppHeaderComponent } from '../../components/app-header/app-header.compo
 import { StarRatingComponent } from '../../components/star-rating/star-rating.component';
 import { AuthService } from '../../services/auth.service';
 import { ProfessionalService } from '../../services/professional.service';
+import { ProfessionalsCacheService } from '../../services/professionals-cache.service';
+import { ProfessionalsCacheService } from '../../services/professionals-cache.service';
 import { addIcons } from 'ionicons';
 import { checkmarkCircle, checkmarkOutline, medkitOutline, locationOutline, timeOutline, callOutline, createOutline, addOutline, saveOutline, closeOutline } from 'ionicons/icons';
 import { MapSelectorComponent } from '../../components/map-selector/map-selector.component';
@@ -44,10 +46,13 @@ export class ProfilePage implements OnInit, OnDestroy {
   originalService: ServiceProfile | null = null;
   isLoading = false;
   error = '';
+  professionals: any[] = [];
   
   // Rating properties
   userRating = 0;
   ratingSubmitted = false;
+  
+  private professionalsSubscription?: Subscription;
   showToast = false;
   toastMessage = '';
   toastColor = 'success';
@@ -60,7 +65,8 @@ export class ProfilePage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private professionalService: ProfessionalService
+    private professionalService: ProfessionalService,
+    private professionalsCacheService: ProfessionalsCacheService
   ) {
     addIcons({
       medkitOutline,
@@ -77,13 +83,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const professionalId = this.route.snapshot.paramMap.get('id');
-    if (!professionalId) {
-      this.error = 'Professional ID not found';
-      return;
-    }
-
-    this.loadProfessionalData(Number(professionalId));
+    this.loadAllProfessionals();
     this.isOwner = this.checkIfOwner();
   }
 
@@ -101,34 +101,56 @@ export class ProfilePage implements OnInit, OnDestroy {
     return currentUser?.type === 'provider';
   }
 
-  loadProfessionalData(professionalId: number | undefined): void {
-    if (professionalId === undefined) {
-      this.error = 'ID do profissional não encontrado';
-      return;
-    }
+  private loadAllProfessionals(): void {
     this.isLoading = true;
     this.error = '';
 
-    this.professionalSub = this.professionalService.getById(professionalId).subscribe({
-      next: (professional: any) => {
-        this.service = {
-          id: professional.id.toString(),
-          name: professional.businessName || `${professional.name} ${professional.surname}`,
-          specialty: professional.category?.name || '',
-          rating: 4.5,
-          reviews: 0,
-          description: professional.businessDescription || '',
-          location: 'Location not available',
-          hour: 'Hours not available',
-          contact: professional.email,
-          photos: professional.photos ? JSON.parse(professional.photos) as string[] : ['assets/images/default-profile.png'],
-          mapUrl: 'https://www.google.com/maps/embed?pb=...',
-          services: []
-        };
-
-        this.loadProfessionalServices(professionalId);
-        this.originalService = { ...this.service };
+    this.professionalsSubscription = this.professionalService.getAll().subscribe({
+      next: (professionals) => {
+        this.professionals = professionals;
+        this.loadProfessionalFromCache();
+      },
+      error: (error) => {
+        console.error('Erro ao carregar profissionais:', error);
+        this.error = 'Não foi possível carregar os dados do profissional.';
         this.isLoading = false;
+      }
+    });
+  }
+
+  private loadProfessionalFromCache(): void {
+    const professionalId = this.route.snapshot.paramMap.get('id');
+    if (!professionalId) {
+      this.error = 'ID do profissional não encontrado';
+      this.isLoading = false;
+      return;
+    }
+
+    const professional = this.professionals.find(p => p.id === professionalId);
+    if (!professional) {
+      this.error = 'Profissional não encontrado';
+      this.isLoading = false;
+      return;
+    }
+
+    this.service = {
+      id: professional.id,
+      name: professional.businessName || `${professional.name} ${professional.surname}`,
+      specialty: professional.category?.name || '',
+      rating: 4.5,
+      reviews: 0,
+      description: professional.businessDescription || '',
+      location: 'Location not available',
+      hour: 'Hours not available',
+      contact: professional.email,
+      photos: professional.photos ? JSON.parse(professional.photos) as string[] : ['assets/images/default-profile.png'],
+      mapUrl: 'https://www.google.com/maps/embed?pb=...',
+      services: []
+    };
+
+    this.loadProfessionalServices(Number(professionalId));
+    this.originalService = { ...this.service };
+    this.isLoading = false;
       },
       error: (error) => {
         console.error('Error loading professional:', error);

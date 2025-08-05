@@ -141,7 +141,7 @@ export class SearchPage implements OnInit, OnDestroy {
   }
 
   goToProfile(service: Service): void {
-    this.router.navigate(['/professional', service.id]);
+    this.router.navigate(['/professional', service.professionalId]);
   }
 
   onCall(service: Service): void {
